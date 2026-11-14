@@ -1,0 +1,17 @@
+site,line,sensor,seq,ts,value
+site-a,line-07,sensor-x,0,1717632003000,0.500
+site-a,line-07,sensor-x,1,1717632063000,1.500
+site-a,line-07,sensor-x,2,1717632123000,2.500
+site-a,line-07,sensor-x,3,1717632183000,3.500
+site-a,line-07,sensor-x,4,1717632243000,4.500
+site-a,line-08,sensor-y,0,1717632000000,0.500
+site-a,line-08,sensor-y,1,1717632060000,1.500
+site-a,line-08,sensor-y,3,1717632180000,3.500
+site-a,line-08,sensor-y,4,1717632240000,4.500
+site-a,line-08,sensor-y,5,1717632300000,5.500
+site-b,line-09,sensor-z,0,1717632000000,0.500
+site-b,line-09,sensor-z,1,1717632060000,1.500
+site-b,line-09,sensor-z,2,1717632120000,2.500
+site-b,line-09,sensor-z,3,1717632180000,3.500
+site-b,line-09,sensor-z,4,1717632240000,4.500
+site-b,line-09,sensor-z,5,1717632300000,5.500

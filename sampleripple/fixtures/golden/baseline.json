@@ -1,0 +1,966 @@
+{
+  "anomalies": [
+    {
+      "actual_at": "2024-06-02T00:04:01.200Z",
+      "actual_ms": 1717286641200,
+      "category": "DRIFT",
+      "delta_ms": 1200,
+      "detail": "trailing_mean_residual_ms=600.000",
+      "expected_at": "2024-06-02T00:04:00.000Z",
+      "expected_ms": 1717286640000,
+      "group_key": "site-a/line-07/sensor-x",
+      "index": 4,
+      "rule_id": "DRIFT_CUMULATIVE",
+      "severity": "warning",
+      "stream_id": "drift-run"
+    },
+    {
+      "actual_at": "2024-06-02T00:05:01.500Z",
+      "actual_ms": 1717286701500,
+      "category": "DRIFT",
+      "delta_ms": 1500,
+      "detail": "trailing_mean_residual_ms=750.000",
+      "expected_at": "2024-06-02T00:05:00.000Z",
+      "expected_ms": 1717286700000,
+      "group_key": "site-a/line-07/sensor-x",
+      "index": 5,
+      "rule_id": "DRIFT_CUMULATIVE",
+      "severity": "warning",
+      "stream_id": "drift-run"
+    },
+    {
+      "actual_at": "2024-06-02T00:06:01.800Z",
+      "actual_ms": 1717286761800,
+      "category": "DRIFT",
+      "delta_ms": 1800,
+      "detail": "trailing_mean_residual_ms=900.000",
+      "expected_at": "2024-06-02T00:06:00.000Z",
+      "expected_ms": 1717286760000,
+      "group_key": "site-a/line-07/sensor-x",
+      "index": 6,
+      "rule_id": "DRIFT_CUMULATIVE",
+      "severity": "warning",
+      "stream_id": "drift-run"
+    },
+    {
+      "actual_at": "2024-06-02T00:07:02.100Z",
+      "actual_ms": 1717286822100,
+      "category": "DRIFT",
+      "delta_ms": 2100,
+      "detail": "trailing_mean_residual_ms=1050.000",
+      "expected_at": "2024-06-02T00:07:00.000Z",
+      "expected_ms": 1717286820000,
+      "group_key": "site-a/line-07/sensor-x",
+      "index": 7,
+      "rule_id": "DRIFT_CUMULATIVE",
+      "severity": "error",
+      "stream_id": "drift-run"
+    },
+    {
+      "actual_at": "2024-06-02T00:08:02.400Z",
+      "actual_ms": 1717286882400,
+      "category": "DRIFT",
+      "delta_ms": 2400,
+      "detail": "trailing_mean_residual_ms=1200.000",
+      "expected_at": "2024-06-02T00:08:00.000Z",
+      "expected_ms": 1717286880000,
+      "group_key": "site-a/line-07/sensor-x",
+      "index": 8,
+      "rule_id": "DRIFT_CUMULATIVE",
+      "severity": "error",
+      "stream_id": "drift-run"
+    },
+    {
+      "actual_at": "2024-06-02T00:09:02.700Z",
+      "actual_ms": 1717286942700,
+      "category": "DRIFT",
+      "delta_ms": 2700,
+      "detail": "trailing_mean_residual_ms=1350.000",
+      "expected_at": "2024-06-02T00:09:00.000Z",
+      "expected_ms": 1717286940000,
+      "group_key": "site-a/line-07/sensor-x",
+      "index": 9,
+      "rule_id": "DRIFT_CUMULATIVE",
+      "severity": "error",
+      "stream_id": "drift-run"
+    },
+    {
+      "actual_at": "2024-06-02T00:09:02.700Z",
+      "actual_ms": 1717286942700,
+      "category": "PERIOD_DRIFT",
+      "delta_ms": 2700,
+      "detail": "least_squares_period_ms=60300.000",
+      "expected_at": "2024-06-02T00:09:00.000Z",
+      "expected_ms": 1717286940000,
+      "fit_period_ms": 60300.000,
+      "group_key": "site-a/line-07/sensor-x",
+      "index": 9,
+      "rule_id": "PERIOD_DRIFT_FIT",
+      "severity": "error",
+      "stream_id": "drift-run"
+    },
+    {
+      "actual_at": "2024-06-03T00:04:00.000Z",
+      "actual_ms": 1717373040000,
+      "category": "GAP",
+      "delta_ms": 60000,
+      "detail": "adjacent interval 120000ms exceeds 61000ms",
+      "expected_at": "2024-06-03T00:03:00.000Z",
+      "expected_ms": 1717372980000,
+      "group_key": "site-a/line-07/sensor-x",
+      "index": 3,
+      "rule_id": "GAP_ADJACENT",
+      "severity": "warning",
+      "stream_id": "gap-run"
+    },
+    {
+      "actual_at": "2024-06-03T00:03:00.000Z",
+      "actual_ms": 1717372980000,
+      "category": "MISSING",
+      "delta_ms": 0,
+      "detail": "absent slot; missing_count=1 policy=strict",
+      "expected_at": "2024-06-03T00:03:00.000Z",
+      "expected_ms": 1717372980000,
+      "group_key": "site-a/line-07/sensor-x",
+      "index": 3,
+      "rule_id": "MISSING_SLOT",
+      "severity": "error",
+      "stream_id": "gap-run"
+    },
+    {
+      "actual_at": "2024-06-04T00:02:00.000Z",
+      "actual_ms": 1717459320000,
+      "category": "DUPLICATE",
+      "delta_ms": 0,
+      "detail": "duplicate timestamp+sequence",
+      "expected_at": "2024-06-04T00:02:00.000Z",
+      "expected_ms": 1717459320000,
+      "group_key": "site-a/line-07/sensor-x",
+      "index": 3,
+      "rule_id": "DUPLICATE_POINT",
+      "severity": "error",
+      "stream_id": "dup-run"
+    },
+    {
+      "actual_at": "2024-06-05T00:01:00.000Z",
+      "actual_ms": 1717545660000,
+      "category": "DISORDER",
+      "delta_ms": -60000,
+      "detail": "local timestamp inversion inside disorder_window",
+      "expected_at": "2024-06-05T00:02:00.000Z",
+      "expected_ms": 1717545720000,
+      "group_key": "site-a/line-07/sensor-x",
+      "index": 2,
+      "rule_id": "DISORDER_LOCAL",
+      "severity": "warning",
+      "stream_id": "disorder-run"
+    },
+    {
+      "actual_at": "2024-06-06T00:00:03.000Z",
+      "actual_ms": 1717632003000,
+      "category": "EDGE_SKEW",
+      "delta_ms": 3000,
+      "detail": "first sample is off the nominal epoch boundary",
+      "expected_at": "2024-06-06T00:00:00.000Z",
+      "expected_ms": 1717632000000,
+      "group_key": "site-a/line-07/sensor-x",
+      "index": 0,
+      "rule_id": "EDGE_SKEW_HEAD",
+      "severity": "warning",
+      "stream_id": "mixed-run"
+    },
+    {
+      "actual_at": "2024-06-06T00:04:03.000Z",
+      "actual_ms": 1717632243000,
+      "category": "EDGE_SKEW",
+      "delta_ms": 3000,
+      "detail": "last sample is off the nominal epoch boundary",
+      "expected_at": "2024-06-06T00:04:00.000Z",
+      "expected_ms": 1717632240000,
+      "group_key": "site-a/line-07/sensor-x",
+      "index": 4,
+      "rule_id": "EDGE_SKEW_TAIL",
+      "severity": "warning",
+      "stream_id": "mixed-run"
+    },
+    {
+      "actual_at": "2024-06-06T00:03:00.000Z",
+      "actual_ms": 1717632180000,
+      "category": "GAP",
+      "delta_ms": 60000,
+      "detail": "adjacent interval 120000ms exceeds 61000ms",
+      "expected_at": "2024-06-06T00:02:00.000Z",
+      "expected_ms": 1717632120000,
+      "group_key": "site-a/line-08/sensor-y",
+      "index": 2,
+      "rule_id": "GAP_ADJACENT",
+      "severity": "warning",
+      "stream_id": "mixed-run"
+    },
+    {
+      "actual_at": "2024-06-06T00:02:00.000Z",
+      "actual_ms": 1717632120000,
+      "category": "MISSING",
+      "delta_ms": 0,
+      "detail": "absent slot; missing_count=1 policy=strict",
+      "expected_at": "2024-06-06T00:02:00.000Z",
+      "expected_ms": 1717632120000,
+      "group_key": "site-a/line-08/sensor-y",
+      "index": 2,
+      "rule_id": "MISSING_SLOT",
+      "severity": "error",
+      "stream_id": "mixed-run"
+    }
+  ],
+  "config_hash": "sha256:26c9dfc7266e3c6276bbd868929d7f27f9e62fcbe32abd9951c314f831691c5f",
+  "report_version": 1,
+  "streams": [
+    {
+      "anomalies": [],
+      "group_by": [
+        "site",
+        "line",
+        "sensor"
+      ],
+      "groups": [
+        {
+          "actual_points": 6,
+          "alignment_offset_ms": 0.000,
+          "anomaly_count": 0,
+          "by_category": {
+            "DISORDER": 0,
+            "DRIFT": 0,
+            "DUPLICATE": 0,
+            "EDGE_SKEW": 0,
+            "GAP": 0,
+            "MISSING": 0,
+            "PERIOD_DRIFT": 0
+          },
+          "expected_points": 6,
+          "first_at": "2024-06-01T00:00:00.000Z",
+          "first_ms": 1717200000000,
+          "group_key": "site-a/line-07/sensor-x",
+          "last_at": "2024-06-01T00:05:00.000Z",
+          "last_ms": 1717200300000,
+          "missing_slots": 0,
+          "period_fit_ms": 60000.000,
+          "status": "ok",
+          "unique_points": 6
+        },
+        {
+          "actual_points": 6,
+          "alignment_offset_ms": 0.000,
+          "anomaly_count": 0,
+          "by_category": {
+            "DISORDER": 0,
+            "DRIFT": 0,
+            "DUPLICATE": 0,
+            "EDGE_SKEW": 0,
+            "GAP": 0,
+            "MISSING": 0,
+            "PERIOD_DRIFT": 0
+          },
+          "expected_points": 6,
+          "first_at": "2024-06-01T00:00:00.000Z",
+          "first_ms": 1717200000000,
+          "group_key": "site-b/line-08/sensor-y",
+          "last_at": "2024-06-01T00:05:00.000Z",
+          "last_ms": 1717200300000,
+          "missing_slots": 0,
+          "period_fit_ms": 60000.000,
+          "status": "ok",
+          "unique_points": 6
+        }
+      ],
+      "nominal_period_ms": 60000,
+      "stream_id": "clean-grid",
+      "summary": {
+        "actual_points": 12,
+        "anomaly_count": 0,
+        "by_category": {
+          "DISORDER": 0,
+          "DRIFT": 0,
+          "DUPLICATE": 0,
+          "EDGE_SKEW": 0,
+          "GAP": 0,
+          "MISSING": 0,
+          "PERIOD_DRIFT": 0
+        },
+        "by_rule": {
+          "DISORDER_LOCAL": 0,
+          "DRIFT_CUMULATIVE": 0,
+          "DUPLICATE_POINT": 0,
+          "EDGE_SKEW_HEAD": 0,
+          "EDGE_SKEW_TAIL": 0,
+          "GAP_ADJACENT": 0,
+          "MISSING_SLOT": 0,
+          "PERIOD_DRIFT_FIT": 0
+        },
+        "by_severity": {
+          "critical": 0,
+          "error": 0,
+          "info": 0,
+          "warning": 0
+        },
+        "expected_points": 12,
+        "group_count": 2,
+        "missing_slots": 0,
+        "status": "ok",
+        "unique_points": 12
+      }
+    },
+    {
+      "anomalies": [
+        {
+          "actual_at": "2024-06-02T00:04:01.200Z",
+          "actual_ms": 1717286641200,
+          "category": "DRIFT",
+          "delta_ms": 1200,
+          "detail": "trailing_mean_residual_ms=600.000",
+          "expected_at": "2024-06-02T00:04:00.000Z",
+          "expected_ms": 1717286640000,
+          "group_key": "site-a/line-07/sensor-x",
+          "index": 4,
+          "rule_id": "DRIFT_CUMULATIVE",
+          "severity": "warning",
+          "stream_id": "drift-run"
+        },
+        {
+          "actual_at": "2024-06-02T00:05:01.500Z",
+          "actual_ms": 1717286701500,
+          "category": "DRIFT",
+          "delta_ms": 1500,
+          "detail": "trailing_mean_residual_ms=750.000",
+          "expected_at": "2024-06-02T00:05:00.000Z",
+          "expected_ms": 1717286700000,
+          "group_key": "site-a/line-07/sensor-x",
+          "index": 5,
+          "rule_id": "DRIFT_CUMULATIVE",
+          "severity": "warning",
+          "stream_id": "drift-run"
+        },
+        {
+          "actual_at": "2024-06-02T00:06:01.800Z",
+          "actual_ms": 1717286761800,
+          "category": "DRIFT",
+          "delta_ms": 1800,
+          "detail": "trailing_mean_residual_ms=900.000",
+          "expected_at": "2024-06-02T00:06:00.000Z",
+          "expected_ms": 1717286760000,
+          "group_key": "site-a/line-07/sensor-x",
+          "index": 6,
+          "rule_id": "DRIFT_CUMULATIVE",
+          "severity": "warning",
+          "stream_id": "drift-run"
+        },
+        {
+          "actual_at": "2024-06-02T00:07:02.100Z",
+          "actual_ms": 1717286822100,
+          "category": "DRIFT",
+          "delta_ms": 2100,
+          "detail": "trailing_mean_residual_ms=1050.000",
+          "expected_at": "2024-06-02T00:07:00.000Z",
+          "expected_ms": 1717286820000,
+          "group_key": "site-a/line-07/sensor-x",
+          "index": 7,
+          "rule_id": "DRIFT_CUMULATIVE",
+          "severity": "error",
+          "stream_id": "drift-run"
+        },
+        {
+          "actual_at": "2024-06-02T00:08:02.400Z",
+          "actual_ms": 1717286882400,
+          "category": "DRIFT",
+          "delta_ms": 2400,
+          "detail": "trailing_mean_residual_ms=1200.000",
+          "expected_at": "2024-06-02T00:08:00.000Z",
+          "expected_ms": 1717286880000,
+          "group_key": "site-a/line-07/sensor-x",
+          "index": 8,
+          "rule_id": "DRIFT_CUMULATIVE",
+          "severity": "error",
+          "stream_id": "drift-run"
+        },
+        {
+          "actual_at": "2024-06-02T00:09:02.700Z",
+          "actual_ms": 1717286942700,
+          "category": "DRIFT",
+          "delta_ms": 2700,
+          "detail": "trailing_mean_residual_ms=1350.000",
+          "expected_at": "2024-06-02T00:09:00.000Z",
+          "expected_ms": 1717286940000,
+          "group_key": "site-a/line-07/sensor-x",
+          "index": 9,
+          "rule_id": "DRIFT_CUMULATIVE",
+          "severity": "error",
+          "stream_id": "drift-run"
+        },
+        {
+          "actual_at": "2024-06-02T00:09:02.700Z",
+          "actual_ms": 1717286942700,
+          "category": "PERIOD_DRIFT",
+          "delta_ms": 2700,
+          "detail": "least_squares_period_ms=60300.000",
+          "expected_at": "2024-06-02T00:09:00.000Z",
+          "expected_ms": 1717286940000,
+          "fit_period_ms": 60300.000,
+          "group_key": "site-a/line-07/sensor-x",
+          "index": 9,
+          "rule_id": "PERIOD_DRIFT_FIT",
+          "severity": "error",
+          "stream_id": "drift-run"
+        }
+      ],
+      "group_by": [
+        "site",
+        "line",
+        "sensor"
+      ],
+      "groups": [
+        {
+          "actual_points": 10,
+          "alignment_offset_ms": 1350.000,
+          "anomaly_count": 7,
+          "by_category": {
+            "DISORDER": 0,
+            "DRIFT": 6,
+            "DUPLICATE": 0,
+            "EDGE_SKEW": 0,
+            "GAP": 0,
+            "MISSING": 0,
+            "PERIOD_DRIFT": 1
+          },
+          "expected_points": 10,
+          "first_at": "2024-06-02T00:00:00.000Z",
+          "first_ms": 1717286400000,
+          "group_key": "site-a/line-07/sensor-x",
+          "last_at": "2024-06-02T00:09:02.700Z",
+          "last_ms": 1717286942700,
+          "missing_slots": 0,
+          "period_fit_ms": 60300.000,
+          "status": "anomalous",
+          "unique_points": 10
+        }
+      ],
+      "nominal_period_ms": 60000,
+      "stream_id": "drift-run",
+      "summary": {
+        "actual_points": 10,
+        "anomaly_count": 7,
+        "by_category": {
+          "DISORDER": 0,
+          "DRIFT": 6,
+          "DUPLICATE": 0,
+          "EDGE_SKEW": 0,
+          "GAP": 0,
+          "MISSING": 0,
+          "PERIOD_DRIFT": 1
+        },
+        "by_rule": {
+          "DISORDER_LOCAL": 0,
+          "DRIFT_CUMULATIVE": 6,
+          "DUPLICATE_POINT": 0,
+          "EDGE_SKEW_HEAD": 0,
+          "EDGE_SKEW_TAIL": 0,
+          "GAP_ADJACENT": 0,
+          "MISSING_SLOT": 0,
+          "PERIOD_DRIFT_FIT": 1
+        },
+        "by_severity": {
+          "critical": 0,
+          "error": 4,
+          "info": 0,
+          "warning": 3
+        },
+        "expected_points": 10,
+        "group_count": 1,
+        "missing_slots": 0,
+        "status": "anomalous",
+        "unique_points": 10
+      }
+    },
+    {
+      "anomalies": [
+        {
+          "actual_at": "2024-06-03T00:04:00.000Z",
+          "actual_ms": 1717373040000,
+          "category": "GAP",
+          "delta_ms": 60000,
+          "detail": "adjacent interval 120000ms exceeds 61000ms",
+          "expected_at": "2024-06-03T00:03:00.000Z",
+          "expected_ms": 1717372980000,
+          "group_key": "site-a/line-07/sensor-x",
+          "index": 3,
+          "rule_id": "GAP_ADJACENT",
+          "severity": "warning",
+          "stream_id": "gap-run"
+        },
+        {
+          "actual_at": "2024-06-03T00:03:00.000Z",
+          "actual_ms": 1717372980000,
+          "category": "MISSING",
+          "delta_ms": 0,
+          "detail": "absent slot; missing_count=1 policy=strict",
+          "expected_at": "2024-06-03T00:03:00.000Z",
+          "expected_ms": 1717372980000,
+          "group_key": "site-a/line-07/sensor-x",
+          "index": 3,
+          "rule_id": "MISSING_SLOT",
+          "severity": "error",
+          "stream_id": "gap-run"
+        }
+      ],
+      "group_by": [
+        "site",
+        "line",
+        "sensor"
+      ],
+      "groups": [
+        {
+          "actual_points": 5,
+          "alignment_offset_ms": 0.000,
+          "anomaly_count": 2,
+          "by_category": {
+            "DISORDER": 0,
+            "DRIFT": 0,
+            "DUPLICATE": 0,
+            "EDGE_SKEW": 0,
+            "GAP": 1,
+            "MISSING": 1,
+            "PERIOD_DRIFT": 0
+          },
+          "expected_points": 6,
+          "first_at": "2024-06-03T00:00:00.000Z",
+          "first_ms": 1717372800000,
+          "group_key": "site-a/line-07/sensor-x",
+          "last_at": "2024-06-03T00:05:00.000Z",
+          "last_ms": 1717373100000,
+          "missing_slots": 1,
+          "period_fit_ms": 60000.000,
+          "status": "anomalous",
+          "unique_points": 5
+        }
+      ],
+      "nominal_period_ms": 60000,
+      "stream_id": "gap-run",
+      "summary": {
+        "actual_points": 5,
+        "anomaly_count": 2,
+        "by_category": {
+          "DISORDER": 0,
+          "DRIFT": 0,
+          "DUPLICATE": 0,
+          "EDGE_SKEW": 0,
+          "GAP": 1,
+          "MISSING": 1,
+          "PERIOD_DRIFT": 0
+        },
+        "by_rule": {
+          "DISORDER_LOCAL": 0,
+          "DRIFT_CUMULATIVE": 0,
+          "DUPLICATE_POINT": 0,
+          "EDGE_SKEW_HEAD": 0,
+          "EDGE_SKEW_TAIL": 0,
+          "GAP_ADJACENT": 1,
+          "MISSING_SLOT": 1,
+          "PERIOD_DRIFT_FIT": 0
+        },
+        "by_severity": {
+          "critical": 0,
+          "error": 1,
+          "info": 0,
+          "warning": 1
+        },
+        "expected_points": 6,
+        "group_count": 1,
+        "missing_slots": 1,
+        "status": "anomalous",
+        "unique_points": 5
+      }
+    },
+    {
+      "anomalies": [
+        {
+          "actual_at": "2024-06-04T00:02:00.000Z",
+          "actual_ms": 1717459320000,
+          "category": "DUPLICATE",
+          "delta_ms": 0,
+          "detail": "duplicate timestamp+sequence",
+          "expected_at": "2024-06-04T00:02:00.000Z",
+          "expected_ms": 1717459320000,
+          "group_key": "site-a/line-07/sensor-x",
+          "index": 3,
+          "rule_id": "DUPLICATE_POINT",
+          "severity": "error",
+          "stream_id": "dup-run"
+        }
+      ],
+      "group_by": [
+        "site",
+        "line",
+        "sensor"
+      ],
+      "groups": [
+        {
+          "actual_points": 7,
+          "alignment_offset_ms": 0.000,
+          "anomaly_count": 1,
+          "by_category": {
+            "DISORDER": 0,
+            "DRIFT": 0,
+            "DUPLICATE": 1,
+            "EDGE_SKEW": 0,
+            "GAP": 0,
+            "MISSING": 0,
+            "PERIOD_DRIFT": 0
+          },
+          "expected_points": 6,
+          "first_at": "2024-06-04T00:00:00.000Z",
+          "first_ms": 1717459200000,
+          "group_key": "site-a/line-07/sensor-x",
+          "last_at": "2024-06-04T00:05:00.000Z",
+          "last_ms": 1717459500000,
+          "missing_slots": 0,
+          "period_fit_ms": 60000.000,
+          "status": "anomalous",
+          "unique_points": 6
+        }
+      ],
+      "nominal_period_ms": 60000,
+      "stream_id": "dup-run",
+      "summary": {
+        "actual_points": 7,
+        "anomaly_count": 1,
+        "by_category": {
+          "DISORDER": 0,
+          "DRIFT": 0,
+          "DUPLICATE": 1,
+          "EDGE_SKEW": 0,
+          "GAP": 0,
+          "MISSING": 0,
+          "PERIOD_DRIFT": 0
+        },
+        "by_rule": {
+          "DISORDER_LOCAL": 0,
+          "DRIFT_CUMULATIVE": 0,
+          "DUPLICATE_POINT": 1,
+          "EDGE_SKEW_HEAD": 0,
+          "EDGE_SKEW_TAIL": 0,
+          "GAP_ADJACENT": 0,
+          "MISSING_SLOT": 0,
+          "PERIOD_DRIFT_FIT": 0
+        },
+        "by_severity": {
+          "critical": 0,
+          "error": 1,
+          "info": 0,
+          "warning": 0
+        },
+        "expected_points": 6,
+        "group_count": 1,
+        "missing_slots": 0,
+        "status": "anomalous",
+        "unique_points": 6
+      }
+    },
+    {
+      "anomalies": [
+        {
+          "actual_at": "2024-06-05T00:01:00.000Z",
+          "actual_ms": 1717545660000,
+          "category": "DISORDER",
+          "delta_ms": -60000,
+          "detail": "local timestamp inversion inside disorder_window",
+          "expected_at": "2024-06-05T00:02:00.000Z",
+          "expected_ms": 1717545720000,
+          "group_key": "site-a/line-07/sensor-x",
+          "index": 2,
+          "rule_id": "DISORDER_LOCAL",
+          "severity": "warning",
+          "stream_id": "disorder-run"
+        }
+      ],
+      "group_by": [
+        "site",
+        "line",
+        "sensor"
+      ],
+      "groups": [
+        {
+          "actual_points": 6,
+          "alignment_offset_ms": 0.000,
+          "anomaly_count": 1,
+          "by_category": {
+            "DISORDER": 1,
+            "DRIFT": 0,
+            "DUPLICATE": 0,
+            "EDGE_SKEW": 0,
+            "GAP": 0,
+            "MISSING": 0,
+            "PERIOD_DRIFT": 0
+          },
+          "expected_points": 6,
+          "first_at": "2024-06-05T00:00:00.000Z",
+          "first_ms": 1717545600000,
+          "group_key": "site-a/line-07/sensor-x",
+          "last_at": "2024-06-05T00:05:00.000Z",
+          "last_ms": 1717545900000,
+          "missing_slots": 0,
+          "period_fit_ms": 60000.000,
+          "status": "anomalous",
+          "unique_points": 6
+        }
+      ],
+      "nominal_period_ms": 60000,
+      "stream_id": "disorder-run",
+      "summary": {
+        "actual_points": 6,
+        "anomaly_count": 1,
+        "by_category": {
+          "DISORDER": 1,
+          "DRIFT": 0,
+          "DUPLICATE": 0,
+          "EDGE_SKEW": 0,
+          "GAP": 0,
+          "MISSING": 0,
+          "PERIOD_DRIFT": 0
+        },
+        "by_rule": {
+          "DISORDER_LOCAL": 1,
+          "DRIFT_CUMULATIVE": 0,
+          "DUPLICATE_POINT": 0,
+          "EDGE_SKEW_HEAD": 0,
+          "EDGE_SKEW_TAIL": 0,
+          "GAP_ADJACENT": 0,
+          "MISSING_SLOT": 0,
+          "PERIOD_DRIFT_FIT": 0
+        },
+        "by_severity": {
+          "critical": 0,
+          "error": 0,
+          "info": 0,
+          "warning": 1
+        },
+        "expected_points": 6,
+        "group_count": 1,
+        "missing_slots": 0,
+        "status": "anomalous",
+        "unique_points": 6
+      }
+    },
+    {
+      "anomalies": [
+        {
+          "actual_at": "2024-06-06T00:00:03.000Z",
+          "actual_ms": 1717632003000,
+          "category": "EDGE_SKEW",
+          "delta_ms": 3000,
+          "detail": "first sample is off the nominal epoch boundary",
+          "expected_at": "2024-06-06T00:00:00.000Z",
+          "expected_ms": 1717632000000,
+          "group_key": "site-a/line-07/sensor-x",
+          "index": 0,
+          "rule_id": "EDGE_SKEW_HEAD",
+          "severity": "warning",
+          "stream_id": "mixed-run"
+        },
+        {
+          "actual_at": "2024-06-06T00:04:03.000Z",
+          "actual_ms": 1717632243000,
+          "category": "EDGE_SKEW",
+          "delta_ms": 3000,
+          "detail": "last sample is off the nominal epoch boundary",
+          "expected_at": "2024-06-06T00:04:00.000Z",
+          "expected_ms": 1717632240000,
+          "group_key": "site-a/line-07/sensor-x",
+          "index": 4,
+          "rule_id": "EDGE_SKEW_TAIL",
+          "severity": "warning",
+          "stream_id": "mixed-run"
+        },
+        {
+          "actual_at": "2024-06-06T00:03:00.000Z",
+          "actual_ms": 1717632180000,
+          "category": "GAP",
+          "delta_ms": 60000,
+          "detail": "adjacent interval 120000ms exceeds 61000ms",
+          "expected_at": "2024-06-06T00:02:00.000Z",
+          "expected_ms": 1717632120000,
+          "group_key": "site-a/line-08/sensor-y",
+          "index": 2,
+          "rule_id": "GAP_ADJACENT",
+          "severity": "warning",
+          "stream_id": "mixed-run"
+        },
+        {
+          "actual_at": "2024-06-06T00:02:00.000Z",
+          "actual_ms": 1717632120000,
+          "category": "MISSING",
+          "delta_ms": 0,
+          "detail": "absent slot; missing_count=1 policy=strict",
+          "expected_at": "2024-06-06T00:02:00.000Z",
+          "expected_ms": 1717632120000,
+          "group_key": "site-a/line-08/sensor-y",
+          "index": 2,
+          "rule_id": "MISSING_SLOT",
+          "severity": "error",
+          "stream_id": "mixed-run"
+        }
+      ],
+      "group_by": [
+        "site",
+        "line",
+        "sensor"
+      ],
+      "groups": [
+        {
+          "actual_points": 5,
+          "alignment_offset_ms": 3000.000,
+          "anomaly_count": 2,
+          "by_category": {
+            "DISORDER": 0,
+            "DRIFT": 0,
+            "DUPLICATE": 0,
+            "EDGE_SKEW": 2,
+            "GAP": 0,
+            "MISSING": 0,
+            "PERIOD_DRIFT": 0
+          },
+          "expected_points": 5,
+          "first_at": "2024-06-06T00:00:03.000Z",
+          "first_ms": 1717632003000,
+          "group_key": "site-a/line-07/sensor-x",
+          "last_at": "2024-06-06T00:04:03.000Z",
+          "last_ms": 1717632243000,
+          "missing_slots": 0,
+          "period_fit_ms": 60000.000,
+          "status": "anomalous",
+          "unique_points": 5
+        },
+        {
+          "actual_points": 5,
+          "alignment_offset_ms": 0.000,
+          "anomaly_count": 2,
+          "by_category": {
+            "DISORDER": 0,
+            "DRIFT": 0,
+            "DUPLICATE": 0,
+            "EDGE_SKEW": 0,
+            "GAP": 1,
+            "MISSING": 1,
+            "PERIOD_DRIFT": 0
+          },
+          "expected_points": 6,
+          "first_at": "2024-06-06T00:00:00.000Z",
+          "first_ms": 1717632000000,
+          "group_key": "site-a/line-08/sensor-y",
+          "last_at": "2024-06-06T00:05:00.000Z",
+          "last_ms": 1717632300000,
+          "missing_slots": 1,
+          "period_fit_ms": 60000.000,
+          "status": "anomalous",
+          "unique_points": 5
+        },
+        {
+          "actual_points": 6,
+          "alignment_offset_ms": 0.000,
+          "anomaly_count": 0,
+          "by_category": {
+            "DISORDER": 0,
+            "DRIFT": 0,
+            "DUPLICATE": 0,
+            "EDGE_SKEW": 0,
+            "GAP": 0,
+            "MISSING": 0,
+            "PERIOD_DRIFT": 0
+          },
+          "expected_points": 6,
+          "first_at": "2024-06-06T00:00:00.000Z",
+          "first_ms": 1717632000000,
+          "group_key": "site-b/line-09/sensor-z",
+          "last_at": "2024-06-06T00:05:00.000Z",
+          "last_ms": 1717632300000,
+          "missing_slots": 0,
+          "period_fit_ms": 60000.000,
+          "status": "ok",
+          "unique_points": 6
+        }
+      ],
+      "nominal_period_ms": 60000,
+      "stream_id": "mixed-run",
+      "summary": {
+        "actual_points": 16,
+        "anomaly_count": 4,
+        "by_category": {
+          "DISORDER": 0,
+          "DRIFT": 0,
+          "DUPLICATE": 0,
+          "EDGE_SKEW": 2,
+          "GAP": 1,
+          "MISSING": 1,
+          "PERIOD_DRIFT": 0
+        },
+        "by_rule": {
+          "DISORDER_LOCAL": 0,
+          "DRIFT_CUMULATIVE": 0,
+          "DUPLICATE_POINT": 0,
+          "EDGE_SKEW_HEAD": 1,
+          "EDGE_SKEW_TAIL": 1,
+          "GAP_ADJACENT": 1,
+          "MISSING_SLOT": 1,
+          "PERIOD_DRIFT_FIT": 0
+        },
+        "by_severity": {
+          "critical": 0,
+          "error": 1,
+          "info": 0,
+          "warning": 3
+        },
+        "expected_points": 17,
+        "group_count": 3,
+        "missing_slots": 1,
+        "status": "anomalous",
+        "unique_points": 16
+      }
+    }
+  ],
+  "summary": {
+    "actual_points": 56,
+    "anomaly_count": 15,
+    "by_category": {
+      "DISORDER": 1,
+      "DRIFT": 6,
+      "DUPLICATE": 1,
+      "EDGE_SKEW": 2,
+      "GAP": 2,
+      "MISSING": 2,
+      "PERIOD_DRIFT": 1
+    },
+    "by_rule": {
+      "DISORDER_LOCAL": 1,
+      "DRIFT_CUMULATIVE": 6,
+      "DUPLICATE_POINT": 1,
+      "EDGE_SKEW_HEAD": 1,
+      "EDGE_SKEW_TAIL": 1,
+      "GAP_ADJACENT": 2,
+      "MISSING_SLOT": 2,
+      "PERIOD_DRIFT_FIT": 1
+    },
+    "by_severity": {
+      "critical": 0,
+      "error": 7,
+      "info": 0,
+      "warning": 8
+    },
+    "expected_points": 57,
+    "group_count": 9,
+    "missing_slots": 2,
+    "status": "anomalous",
+    "stream_count": 6,
+    "unique_points": 55
+  },
+  "tool": {
+    "name": "sampleripple",
+    "version": "0.1.0"
+  }
+}

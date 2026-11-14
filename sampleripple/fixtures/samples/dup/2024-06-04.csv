@@ -1,0 +1,8 @@
+site,line,sensor,seq,ts,value
+site-a,line-07,sensor-x,0,1717459200000,0.500
+site-a,line-07,sensor-x,1,1717459260000,1.500
+site-a,line-07,sensor-x,2,1717459320000,2.500
+site-a,line-07,sensor-x,2,1717459320000,2.500
+site-a,line-07,sensor-x,3,1717459380000,3.500
+site-a,line-07,sensor-x,4,1717459440000,4.500
+site-a,line-07,sensor-x,5,1717459500000,5.500

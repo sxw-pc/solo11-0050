@@ -1,0 +1,109 @@
+version: 1
+base_dir: ..
+ledger:
+  db_path: var/strict.db
+server:
+  host: 127.0.0.1
+  port: 8766
+streams:
+  - stream_id: strict-clean-grid
+    source: fixtures/samples/clean
+    format: csv
+    time_field: ts
+    time_format: epoch_ms
+    sequence_field: seq
+    group_by: [site, line, sensor]
+    nominal_period_ms: 60000
+    jitter_tolerance_ms: 100
+    gap_tolerance_ms: 0
+    missing_policy: strict
+    disorder_window: 2
+    duplicate_policy: report
+    drift_tolerance_ms: 100
+    period_drift_tolerance_ms: 100
+    edge_tolerance_ms: 0
+
+  - stream_id: strict-drift-run
+    source: fixtures/samples/drift/2024-06-02.csv
+    format: csv
+    time_field: ts
+    time_format: epoch_ms
+    sequence_field: seq
+    group_by: [site, line, sensor]
+    nominal_period_ms: 60000
+    jitter_tolerance_ms: 100
+    gap_tolerance_ms: 0
+    missing_policy: strict
+    disorder_window: 2
+    duplicate_policy: report
+    drift_tolerance_ms: 100
+    period_drift_tolerance_ms: 100
+    edge_tolerance_ms: 0
+
+  - stream_id: strict-gap-run
+    source: fixtures/samples/gap/2024-06-03.jsonl
+    format: jsonl
+    time_field: ts
+    time_format: epoch_ms
+    sequence_field: seq
+    group_by: [site, line, sensor]
+    nominal_period_ms: 60000
+    jitter_tolerance_ms: 100
+    gap_tolerance_ms: 0
+    missing_policy: strict
+    disorder_window: 2
+    duplicate_policy: report
+    drift_tolerance_ms: 100
+    period_drift_tolerance_ms: 100
+    edge_tolerance_ms: 0
+
+  - stream_id: strict-dup-run
+    source: fixtures/samples/dup/2024-06-04.csv
+    format: csv
+    time_field: ts
+    time_format: epoch_ms
+    sequence_field: seq
+    group_by: [site, line, sensor]
+    nominal_period_ms: 60000
+    jitter_tolerance_ms: 100
+    gap_tolerance_ms: 0
+    missing_policy: strict
+    disorder_window: 2
+    duplicate_policy: report
+    drift_tolerance_ms: 100
+    period_drift_tolerance_ms: 100
+    edge_tolerance_ms: 0
+
+  - stream_id: strict-disorder-run
+    source: fixtures/samples/disorder/2024-06-05.jsonl
+    format: jsonl
+    time_field: ts
+    time_format: epoch_ms
+    sequence_field: seq
+    group_by: [site, line, sensor]
+    nominal_period_ms: 60000
+    jitter_tolerance_ms: 100
+    gap_tolerance_ms: 0
+    missing_policy: strict
+    disorder_window: 2
+    duplicate_policy: report
+    drift_tolerance_ms: 100
+    period_drift_tolerance_ms: 100
+    edge_tolerance_ms: 0
+
+  - stream_id: strict-mixed-run
+    source: fixtures/samples/mixed/2024-06-06.csv
+    format: csv
+    time_field: ts
+    time_format: epoch_ms
+    sequence_field: seq
+    group_by: [site, line, sensor]
+    nominal_period_ms: 60000
+    jitter_tolerance_ms: 100
+    gap_tolerance_ms: 0
+    missing_policy: strict
+    disorder_window: 2
+    duplicate_policy: report
+    drift_tolerance_ms: 100
+    period_drift_tolerance_ms: 100
+    edge_tolerance_ms: 0

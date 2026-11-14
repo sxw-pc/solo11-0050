@@ -1,0 +1,6 @@
+{"site": "site-a", "line": "line-07", "sensor": "sensor-x", "seq": 0, "ts": 1717545600000, "value": 0.25}
+{"site": "site-a", "line": "line-07", "sensor": "sensor-x", "seq": 2, "ts": 1717545720000, "value": 2.25}
+{"site": "site-a", "line": "line-07", "sensor": "sensor-x", "seq": 1, "ts": 1717545660000, "value": 1.25}
+{"site": "site-a", "line": "line-07", "sensor": "sensor-x", "seq": 3, "ts": 1717545780000, "value": 3.25}
+{"site": "site-a", "line": "line-07", "sensor": "sensor-x", "seq": 4, "ts": 1717545840000, "value": 4.25}
+{"site": "site-a", "line": "line-07", "sensor": "sensor-x", "seq": 5, "ts": 1717545900000, "value": 5.25}
