@@ -1,0 +1,140 @@
+{
+  "anomalies": [],
+  "config_hash": "sha256:4cbf225a385ff38a2e2e08196207c307798d88446cd0bf267c2f38860b49afc2",
+  "report_version": 1,
+  "streams": [
+    {
+      "anomalies": [],
+      "group_by": [
+        "site",
+        "line",
+        "sensor"
+      ],
+      "groups": [
+        {
+          "actual_points": 6,
+          "alignment_offset_ms": 0.000,
+          "anomaly_count": 0,
+          "by_category": {
+            "DISORDER": 0,
+            "DRIFT": 0,
+            "DUPLICATE": 0,
+            "EDGE_SKEW": 0,
+            "GAP": 0,
+            "MISSING": 0,
+            "PERIOD_DRIFT": 0
+          },
+          "expected_points": 6,
+          "first_at": "2024-06-01T00:00:00.000Z",
+          "first_ms": 1717200000000,
+          "group_key": "site-a/line-07/sensor-x",
+          "last_at": "2024-06-01T00:05:00.000Z",
+          "last_ms": 1717200300000,
+          "missing_slots": 0,
+          "period_fit_ms": 60000.000,
+          "status": "ok",
+          "unique_points": 6
+        },
+        {
+          "actual_points": 6,
+          "alignment_offset_ms": 0.000,
+          "anomaly_count": 0,
+          "by_category": {
+            "DISORDER": 0,
+            "DRIFT": 0,
+            "DUPLICATE": 0,
+            "EDGE_SKEW": 0,
+            "GAP": 0,
+            "MISSING": 0,
+            "PERIOD_DRIFT": 0
+          },
+          "expected_points": 6,
+          "first_at": "2024-06-01T00:00:00.000Z",
+          "first_ms": 1717200000000,
+          "group_key": "site-b/line-08/sensor-y",
+          "last_at": "2024-06-01T00:05:00.000Z",
+          "last_ms": 1717200300000,
+          "missing_slots": 0,
+          "period_fit_ms": 60000.000,
+          "status": "ok",
+          "unique_points": 6
+        }
+      ],
+      "nominal_period_ms": 60000,
+      "stream_id": "clean-grid",
+      "summary": {
+        "actual_points": 12,
+        "anomaly_count": 0,
+        "by_category": {
+          "DISORDER": 0,
+          "DRIFT": 0,
+          "DUPLICATE": 0,
+          "EDGE_SKEW": 0,
+          "GAP": 0,
+          "MISSING": 0,
+          "PERIOD_DRIFT": 0
+        },
+        "by_rule": {
+          "DISORDER_LOCAL": 0,
+          "DRIFT_CUMULATIVE": 0,
+          "DUPLICATE_POINT": 0,
+          "EDGE_SKEW_HEAD": 0,
+          "EDGE_SKEW_TAIL": 0,
+          "GAP_ADJACENT": 0,
+          "MISSING_SLOT": 0,
+          "PERIOD_DRIFT_FIT": 0
+        },
+        "by_severity": {
+          "critical": 0,
+          "error": 0,
+          "info": 0,
+          "warning": 0
+        },
+        "expected_points": 12,
+        "group_count": 2,
+        "missing_slots": 0,
+        "status": "ok",
+        "unique_points": 12
+      }
+    }
+  ],
+  "summary": {
+    "actual_points": 12,
+    "anomaly_count": 0,
+    "by_category": {
+      "DISORDER": 0,
+      "DRIFT": 0,
+      "DUPLICATE": 0,
+      "EDGE_SKEW": 0,
+      "GAP": 0,
+      "MISSING": 0,
+      "PERIOD_DRIFT": 0
+    },
+    "by_rule": {
+      "DISORDER_LOCAL": 0,
+      "DRIFT_CUMULATIVE": 0,
+      "DUPLICATE_POINT": 0,
+      "EDGE_SKEW_HEAD": 0,
+      "EDGE_SKEW_TAIL": 0,
+      "GAP_ADJACENT": 0,
+      "MISSING_SLOT": 0,
+      "PERIOD_DRIFT_FIT": 0
+    },
+    "by_severity": {
+      "critical": 0,
+      "error": 0,
+      "info": 0,
+      "warning": 0
+    },
+    "expected_points": 12,
+    "group_count": 2,
+    "missing_slots": 0,
+    "status": "ok",
+    "stream_count": 1,
+    "unique_points": 12
+  },
+  "tool": {
+    "name": "sampleripple",
+    "version": "0.1.0"
+  }
+}

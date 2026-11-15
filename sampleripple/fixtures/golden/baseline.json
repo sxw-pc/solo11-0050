@@ -214,6 +214,1010 @@
   ],
   "config_hash": "sha256:26c9dfc7266e3c6276bbd868929d7f27f9e62fcbe32abd9951c314f831691c5f",
   "report_version": 1,
+  "sensitivity_certificate": {
+    "entry_count": 9,
+    "flip_count": 10,
+    "groups": [
+      {
+        "flip_count": 0,
+        "group_key": "site-a/line-07/sensor-x",
+        "rules": [
+          {
+            "category": "GAP",
+            "current_value": 1000,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "gap_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "GAP_ADJACENT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DRIFT",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DRIFT_CUMULATIVE",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DUPLICATE",
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": null,
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "DUPLICATE_POINT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DISORDER",
+            "current_value": 2,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "disorder_window",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DISORDER_LOCAL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "MISSING",
+            "current_value": 0,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "missing_allow_k",
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "MISSING_SLOT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_HEAD",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_TAIL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "PERIOD_DRIFT",
+            "current_value": 200,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "period_drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "PERIOD_DRIFT_FIT",
+            "stable_delta": -1,
+            "triggered": false
+          }
+        ],
+        "stream_id": "clean-grid"
+      },
+      {
+        "flip_count": 0,
+        "group_key": "site-b/line-08/sensor-y",
+        "rules": [
+          {
+            "category": "GAP",
+            "current_value": 1000,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "gap_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "GAP_ADJACENT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DRIFT",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DRIFT_CUMULATIVE",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DUPLICATE",
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": null,
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "DUPLICATE_POINT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DISORDER",
+            "current_value": 2,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "disorder_window",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DISORDER_LOCAL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "MISSING",
+            "current_value": 0,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "missing_allow_k",
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "MISSING_SLOT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_HEAD",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_TAIL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "PERIOD_DRIFT",
+            "current_value": 200,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "period_drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "PERIOD_DRIFT_FIT",
+            "stable_delta": -1,
+            "triggered": false
+          }
+        ],
+        "stream_id": "clean-grid"
+      },
+      {
+        "flip_count": 4,
+        "group_key": "site-a/line-07/sensor-x",
+        "rules": [
+          {
+            "category": "GAP",
+            "current_value": 1000,
+            "decrease": {
+              "adjusted_value": 299,
+              "current_value": 1000,
+              "delta": 701,
+              "direction": "decrease",
+              "triggered_after": true,
+              "triggered_now": false
+            },
+            "flippable": true,
+            "increase": null,
+            "parameter": "gap_tolerance_ms",
+            "reason": "exact_integer_boundary",
+            "rule_id": "GAP_ADJACENT",
+            "stable_delta": 700,
+            "triggered": false
+          },
+          {
+            "category": "DRIFT",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": true,
+            "increase": {
+              "adjusted_value": 1350,
+              "current_value": 500,
+              "delta": 850,
+              "direction": "increase",
+              "triggered_after": false,
+              "triggered_now": true
+            },
+            "parameter": "drift_tolerance_ms",
+            "reason": "exact_integer_boundary",
+            "rule_id": "DRIFT_CUMULATIVE",
+            "stable_delta": 849,
+            "triggered": true
+          },
+          {
+            "category": "DUPLICATE",
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": null,
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "DUPLICATE_POINT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DISORDER",
+            "current_value": 2,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "disorder_window",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DISORDER_LOCAL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "MISSING",
+            "current_value": 0,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "missing_allow_k",
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "MISSING_SLOT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 5000,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_HEAD",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 5000,
+            "decrease": {
+              "adjusted_value": 2699,
+              "current_value": 5000,
+              "delta": 2301,
+              "direction": "decrease",
+              "triggered_after": true,
+              "triggered_now": false
+            },
+            "flippable": true,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "exact_integer_boundary",
+            "rule_id": "EDGE_SKEW_TAIL",
+            "stable_delta": 2300,
+            "triggered": false
+          },
+          {
+            "category": "PERIOD_DRIFT",
+            "current_value": 200,
+            "decrease": null,
+            "flippable": true,
+            "increase": {
+              "adjusted_value": 300,
+              "current_value": 200,
+              "delta": 100,
+              "direction": "increase",
+              "triggered_after": false,
+              "triggered_now": true
+            },
+            "parameter": "period_drift_tolerance_ms",
+            "reason": "exact_integer_boundary",
+            "rule_id": "PERIOD_DRIFT_FIT",
+            "stable_delta": 99,
+            "triggered": true
+          }
+        ],
+        "stream_id": "drift-run"
+      },
+      {
+        "flip_count": 2,
+        "group_key": "site-a/line-07/sensor-x",
+        "rules": [
+          {
+            "category": "GAP",
+            "current_value": 1000,
+            "decrease": null,
+            "flippable": true,
+            "increase": {
+              "adjusted_value": 60000,
+              "current_value": 1000,
+              "delta": 59000,
+              "direction": "increase",
+              "triggered_after": false,
+              "triggered_now": true
+            },
+            "parameter": "gap_tolerance_ms",
+            "reason": "exact_integer_boundary",
+            "rule_id": "GAP_ADJACENT",
+            "stable_delta": 58999,
+            "triggered": true
+          },
+          {
+            "category": "DRIFT",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DRIFT_CUMULATIVE",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DUPLICATE",
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": null,
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "DUPLICATE_POINT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DISORDER",
+            "current_value": 2,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "disorder_window",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DISORDER_LOCAL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "MISSING",
+            "current_value": 0,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "missing_allow_k",
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "MISSING_SLOT",
+            "stable_delta": -1,
+            "triggered": true
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_HEAD",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_TAIL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "PERIOD_DRIFT",
+            "current_value": 200,
+            "decrease": {
+              "adjusted_value": 0,
+              "current_value": 200,
+              "delta": 200,
+              "direction": "decrease",
+              "triggered_after": true,
+              "triggered_now": false
+            },
+            "flippable": true,
+            "increase": null,
+            "parameter": "period_drift_tolerance_ms",
+            "reason": "exact_integer_boundary",
+            "rule_id": "PERIOD_DRIFT_FIT",
+            "stable_delta": 199,
+            "triggered": false
+          }
+        ],
+        "stream_id": "gap-run"
+      },
+      {
+        "flip_count": 0,
+        "group_key": "site-a/line-07/sensor-x",
+        "rules": [
+          {
+            "category": "GAP",
+            "current_value": 1000,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "gap_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "GAP_ADJACENT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DRIFT",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DRIFT_CUMULATIVE",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DUPLICATE",
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": null,
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "DUPLICATE_POINT",
+            "stable_delta": -1,
+            "triggered": true
+          },
+          {
+            "category": "DISORDER",
+            "current_value": 2,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "disorder_window",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DISORDER_LOCAL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "MISSING",
+            "current_value": 0,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "missing_allow_k",
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "MISSING_SLOT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_HEAD",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_TAIL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "PERIOD_DRIFT",
+            "current_value": 200,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "period_drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "PERIOD_DRIFT_FIT",
+            "stable_delta": -1,
+            "triggered": false
+          }
+        ],
+        "stream_id": "dup-run"
+      },
+      {
+        "flip_count": 1,
+        "group_key": "site-a/line-07/sensor-x",
+        "rules": [
+          {
+            "category": "GAP",
+            "current_value": 1000,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "gap_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "GAP_ADJACENT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DRIFT",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DRIFT_CUMULATIVE",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DUPLICATE",
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": null,
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "DUPLICATE_POINT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DISORDER",
+            "current_value": 2,
+            "decrease": {
+              "adjusted_value": 0,
+              "current_value": 2,
+              "delta": 2,
+              "direction": "decrease",
+              "triggered_after": false,
+              "triggered_now": true
+            },
+            "flippable": true,
+            "increase": null,
+            "parameter": "disorder_window",
+            "reason": "exact_integer_boundary",
+            "rule_id": "DISORDER_LOCAL",
+            "stable_delta": 1,
+            "triggered": true
+          },
+          {
+            "category": "MISSING",
+            "current_value": 0,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "missing_allow_k",
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "MISSING_SLOT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_HEAD",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_TAIL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "PERIOD_DRIFT",
+            "current_value": 200,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "period_drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "PERIOD_DRIFT_FIT",
+            "stable_delta": -1,
+            "triggered": false
+          }
+        ],
+        "stream_id": "disorder-run"
+      },
+      {
+        "flip_count": 2,
+        "group_key": "site-a/line-07/sensor-x",
+        "rules": [
+          {
+            "category": "GAP",
+            "current_value": 1000,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "gap_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "GAP_ADJACENT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DRIFT",
+            "current_value": 5000,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DRIFT_CUMULATIVE",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DUPLICATE",
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": null,
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "DUPLICATE_POINT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DISORDER",
+            "current_value": 2,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "disorder_window",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DISORDER_LOCAL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "MISSING",
+            "current_value": 0,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "missing_allow_k",
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "MISSING_SLOT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": true,
+            "increase": {
+              "adjusted_value": 3000,
+              "current_value": 500,
+              "delta": 2500,
+              "direction": "increase",
+              "triggered_after": false,
+              "triggered_now": true
+            },
+            "parameter": "edge_tolerance_ms",
+            "reason": "exact_integer_boundary",
+            "rule_id": "EDGE_SKEW_HEAD",
+            "stable_delta": 2499,
+            "triggered": true
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": true,
+            "increase": {
+              "adjusted_value": 3000,
+              "current_value": 500,
+              "delta": 2500,
+              "direction": "increase",
+              "triggered_after": false,
+              "triggered_now": true
+            },
+            "parameter": "edge_tolerance_ms",
+            "reason": "exact_integer_boundary",
+            "rule_id": "EDGE_SKEW_TAIL",
+            "stable_delta": 2499,
+            "triggered": true
+          },
+          {
+            "category": "PERIOD_DRIFT",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "period_drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "PERIOD_DRIFT_FIT",
+            "stable_delta": -1,
+            "triggered": false
+          }
+        ],
+        "stream_id": "mixed-run"
+      },
+      {
+        "flip_count": 1,
+        "group_key": "site-a/line-08/sensor-y",
+        "rules": [
+          {
+            "category": "GAP",
+            "current_value": 1000,
+            "decrease": null,
+            "flippable": true,
+            "increase": {
+              "adjusted_value": 60000,
+              "current_value": 1000,
+              "delta": 59000,
+              "direction": "increase",
+              "triggered_after": false,
+              "triggered_now": true
+            },
+            "parameter": "gap_tolerance_ms",
+            "reason": "exact_integer_boundary",
+            "rule_id": "GAP_ADJACENT",
+            "stable_delta": 58999,
+            "triggered": true
+          },
+          {
+            "category": "DRIFT",
+            "current_value": 5000,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DRIFT_CUMULATIVE",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DUPLICATE",
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": null,
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "DUPLICATE_POINT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DISORDER",
+            "current_value": 2,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "disorder_window",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DISORDER_LOCAL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "MISSING",
+            "current_value": 0,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "missing_allow_k",
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "MISSING_SLOT",
+            "stable_delta": -1,
+            "triggered": true
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_HEAD",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_TAIL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "PERIOD_DRIFT",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "period_drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "PERIOD_DRIFT_FIT",
+            "stable_delta": -1,
+            "triggered": false
+          }
+        ],
+        "stream_id": "mixed-run"
+      },
+      {
+        "flip_count": 0,
+        "group_key": "site-b/line-09/sensor-z",
+        "rules": [
+          {
+            "category": "GAP",
+            "current_value": 1000,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "gap_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "GAP_ADJACENT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DRIFT",
+            "current_value": 5000,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DRIFT_CUMULATIVE",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DUPLICATE",
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": null,
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "DUPLICATE_POINT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "DISORDER",
+            "current_value": 2,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "disorder_window",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "DISORDER_LOCAL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "MISSING",
+            "current_value": 0,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "missing_allow_k",
+            "reason": "governed_by_policy_not_tolerance",
+            "rule_id": "MISSING_SLOT",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_HEAD",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "EDGE_SKEW",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "edge_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "EDGE_SKEW_TAIL",
+            "stable_delta": -1,
+            "triggered": false
+          },
+          {
+            "category": "PERIOD_DRIFT",
+            "current_value": 500,
+            "decrease": null,
+            "flippable": false,
+            "increase": null,
+            "parameter": "period_drift_tolerance_ms",
+            "reason": "fully_saturated_within_integral_range",
+            "rule_id": "PERIOD_DRIFT_FIT",
+            "stable_delta": -1,
+            "triggered": false
+          }
+        ],
+        "stream_id": "mixed-run"
+      }
+    ],
+    "rule_aggregate": {
+      "DISORDER_LOCAL": 1,
+      "DRIFT_CUMULATIVE": 1,
+      "DUPLICATE_POINT": 0,
+      "EDGE_SKEW_HEAD": 1,
+      "EDGE_SKEW_TAIL": 2,
+      "GAP_ADJACENT": 3,
+      "MISSING_SLOT": 0,
+      "PERIOD_DRIFT_FIT": 2
+    }
+  },
   "streams": [
     {
       "anomalies": [],

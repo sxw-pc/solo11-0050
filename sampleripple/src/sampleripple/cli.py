@@ -132,6 +132,7 @@ def command_verify(args: argparse.Namespace) -> int:
         report_sha256=report_sha,
         report=report,
         anomalies=verification.anomalies,
+        sensitivity=verification.sensitivity,
     )
     meta = {
         "config_hash": config.config_hash,

@@ -7,6 +7,7 @@ from typing import Iterable
 
 from . import __version__
 from .anomalies import CATEGORIES, RULES, SEVERITIES, Anomaly
+from .certificate import FlipBoundary, GroupSensitivity, RuleSensitivity, has_flip
 from .engine import StreamRun, Verification
 from .timeline import GroupTimeline
 from .util.timeutil import iso_from_ms
@@ -45,6 +46,71 @@ def anomaly_dict(anomaly: Anomaly) -> dict[str, object]:
     if anomaly.fit_period_ms is not None:
         data["fit_period_ms"] = anomaly.fit_period_ms
     return data
+
+
+def _boundary_dict(boundary: FlipBoundary) -> dict[str, object]:
+    return {
+        "adjusted_value": boundary.adjusted_value,
+        "current_value": boundary.current_value,
+        "delta": boundary.delta,
+        "direction": boundary.direction,
+        "triggered_after": boundary.triggered_after,
+        "triggered_now": boundary.triggered_now,
+    }
+
+
+def _rule_sensitivity_dict(row: RuleSensitivity) -> dict[str, object]:
+    data: dict[str, object] = {
+        "category": row.category,
+        "decrease": _boundary_dict(row.decrease) if row.decrease else None,
+        "flippable": row.flippable,
+        "increase": _boundary_dict(row.increase) if row.increase else None,
+        "parameter": row.parameter,
+        "reason": row.reason,
+        "rule_id": row.rule_id,
+        "stable_delta": row.stable_delta,
+        "triggered": row.triggered,
+    }
+    if row.current_value is not None:
+        data["current_value"] = row.current_value
+    return data
+
+
+def _sensitivity_group_dict(group: GroupSensitivity) -> dict[str, object]:
+    return {
+        "flip_count": sum(1 for row in group.rules if row.flippable),
+        "group_key": group.group_key,
+        "rules": [_rule_sensitivity_dict(row) for row in group.rules],
+        "stream_id": group.stream_id,
+    }
+
+
+def _sensitivity_certificate(
+    verification: Verification,
+) -> dict[str, object] | None:
+    if not any(has_flip(certificate) for certificate in verification.sensitivity):
+        return None
+    groups = [
+        _sensitivity_group_dict(group)
+        for certificate in verification.sensitivity
+        for group in certificate
+    ]
+    flippable = [
+        row
+        for certificate in verification.sensitivity
+        for group in certificate
+        for row in group.rules
+        if row.flippable
+    ]
+    by_rule: dict[str, int] = {}
+    for row in flippable:
+        by_rule[row.rule_id] = by_rule.get(row.rule_id, 0) + 1
+    return {
+        "entry_count": len(groups),
+        "flip_count": len(flippable),
+        "groups": groups,
+        "rule_aggregate": {rule: by_rule.get(rule, 0) for rule in RULES},
+    }
 
 
 def _group_dict(timeline: GroupTimeline, anomalies: tuple[Anomaly, ...]) -> dict[str, object]:
@@ -111,7 +177,8 @@ def build_report(verification: Verification) -> dict[str, object]:
     total_unique = sum(item["summary"]["unique_points"] for item in streams)
     total_expected = sum(item["summary"]["expected_points"] for item in streams)
     total_missing = sum(item["summary"]["missing_slots"] for item in streams)
-    return {
+    certificate = _sensitivity_certificate(verification)
+    report: dict[str, object] = {
         "anomalies": [anomaly_dict(anomaly) for anomaly in anomalies],
         "config_hash": verification.config.config_hash,
         "report_version": 1,
@@ -131,3 +198,6 @@ def build_report(verification: Verification) -> dict[str, object]:
         },
         "tool": {"name": "sampleripple", "version": __version__},
     }
+    if certificate is not None:
+        report["sensitivity_certificate"] = certificate
+    return report

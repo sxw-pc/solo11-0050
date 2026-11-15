@@ -29,6 +29,77 @@ def _all_anomalies(report: dict[str, Any]) -> list[dict[str, Any]]:
     return items
 
 
+def _boundary_text(boundary: dict[str, Any] | None) -> str:
+    if boundary is None:
+        return "never"
+    sign = "+" if boundary["direction"] == "increase" else "-"
+    return f"{sign}{boundary['delta']} (={boundary['adjusted_value']})"
+
+
+def _sensitivity_sections(report: dict[str, Any]) -> list[str]:
+    certificate = report.get("sensitivity_certificate")
+    if certificate is None:
+        return []
+    lines = ["", "## 敏感度证书", ""]
+    lines.append(
+        "证书逐分组逐规则给出整数容差翻转边界：`stable_delta` 为结论保持不变的"
+        "最大调整幅度，`decrease`/`increase` 为发生翻转的最小整数调整量"
+        "（括号内为调整后的参数值），`never` 表示该方向在结构上不可翻转。"
+    )
+    lines.append("")
+    aggregate_rows = [
+        [rule_id, count]
+        for rule_id, count in certificate["rule_aggregate"].items()
+    ]
+    lines.append("### 按规则聚合（可翻转条目数）")
+    lines.append("")
+    lines.extend(_table(["rule_id", "可翻转分组数"], aggregate_rows))
+    rows = []
+    for group in certificate["groups"]:
+        for rule in group["rules"]:
+            if not rule["flippable"]:
+                continue
+            rows.append(
+                [
+                    group["stream_id"],
+                    group["group_key"],
+                    rule["rule_id"],
+                    rule["category"],
+                    rule["parameter"],
+                    rule["current_value"],
+                    "是" if rule["triggered"] else "否",
+                    rule["stable_delta"],
+                    _boundary_text(rule["decrease"]),
+                    _boundary_text(rule["increase"]),
+                ]
+            )
+    lines.extend(["", "### 翻转边界（推荐审查阈值）", ""])
+    lines.extend(
+        _table(
+            [
+                "stream", "group", "rule_id", "类别", "参数", "当前值",
+                "当前触发", "稳定幅度", "下调翻转", "上调翻转",
+            ],
+            rows,
+        )
+    )
+    non_flippable = [
+        (group["stream_id"], group["group_key"], rule["rule_id"], rule["reason"])
+        for group in certificate["groups"]
+        for rule in group["rules"]
+        if not rule["flippable"]
+    ]
+    if non_flippable:
+        lines.extend(["", "### 不可翻转条目", ""])
+        lines.extend(
+            _table(
+                ["stream", "group", "rule_id", "原因"],
+                non_flippable,
+            )
+        )
+    return lines
+
+
 def render_markdown(report: dict[str, Any]) -> str:
     summary = report["summary"]
     lines = [
@@ -111,5 +182,6 @@ def render_markdown(report: dict[str, Any]) -> str:
                 ["", f"> 仅展示前 {TOP_N} 条，共 {len(anomalies)} 条；"
                  "完整证据见 report.json。"]
             )
+    lines.extend(_sensitivity_sections(report))
     lines.extend(["", "---", "", "本报告完全由本地确定性规则生成，不含运行时钟。", ""])
     return "\n".join(lines)
