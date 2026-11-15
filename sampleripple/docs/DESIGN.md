@@ -81,8 +81,7 @@ configs/*.yaml
 8. **对齐偏移**：对每个唯一点，计算它到最近 Unix epoch 标称边界
    `b(t) = round_half_up(t / P) * P` 的有符号残差，取中位数，即
    `alignment_offset_ms`。该指标衡量整体相位是否踩在标称边界上。
-9. **周期拟合**：以槽位为 `x`、`t - anchor` 为 `y` 做最小二乘斜率，得到
-   `period_fit_ms`。少于两个不同槽位时为 `null`。
+9. **周期拟合**：先按槽位对唯一点去重，每槽保留输入顺序中的第一条代表点（`fit_points` / `fit_slots`），配对只在代表点集合上进行。`period_estimator: robust`（默认）取代表点两两斜率的中位数（Theil–Sen），`least_squares` 以槽位为 `x`、`t - anchor` 为 `y` 做最小二乘斜率；结果为 `period_fit_ms`，少于两个不同槽位时为 `null`。`PERIOD_DRIFT_FIT` 的判定值、`expected_ms`（`anchor + P * last_slot`）与分组展示值共用这份集合和同一个末槽位。
 10. **分组键**：`group_by` 字段值按配置顺序用 `/` 连接。示例数据只用无歧义占位符。
 
 重建不修改、不回填任何样本；乱序和重复都作为证据输出。

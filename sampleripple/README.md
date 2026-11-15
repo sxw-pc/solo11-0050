@@ -78,6 +78,7 @@ streams:
     drift_tolerance_ms: 500
     period_drift_tolerance_ms: 200
     edge_tolerance_ms: 500
+    period_estimator: robust         # robust（默认，抗离群）/ least_squares
 ```
 
 `source` 与 `ledger.db_path` 的相对路径以 `base_dir` 为基准；未声明 `base_dir` 时以配置文件所在目录为基准。所有示例键值均为合成占位符。
@@ -92,7 +93,7 @@ streams:
 | `DISORDER` | `DISORDER_LOCAL` | 原始输入顺序在 `disorder_window` 内出现时间逆序 |
 | `MISSING` | `MISSING_SLOT` | 按时间跨度声明的网格槽缺失，超过 `missing_policy` 容忍度 |
 | `EDGE_SKEW` | `EDGE_SKEW_HEAD` / `EDGE_SKEW_TAIL` | 组首/末样本偏离最近的标称边界超过 `edge_tolerance_ms` |
-| `PERIOD_DRIFT` | `PERIOD_DRIFT_FIT` | 最小二乘拟合周期与标称周期偏差超过 `period_drift_tolerance_ms` |
+| `PERIOD_DRIFT` | `PERIOD_DRIFT_FIT` | 槽位去重后的拟合周期与标称周期偏差超过 `period_drift_tolerance_ms`；`period_estimator` 可选 `robust`（默认 Theil–Sen 中位数斜率，抗单点离群）或 `least_squares` |
 
 公式、严重级别与误判提示见 [docs/ANOMALY_TAXONOMY.md](docs/ANOMALY_TAXONOMY.md)。
 

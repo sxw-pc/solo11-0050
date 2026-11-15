@@ -20,6 +20,8 @@ TIME_FORMATS = frozenset({"epoch_ms", "iso8601"})
 INPUT_FORMATS = frozenset({"csv", "jsonl", "auto"})
 MISSING_POLICIES = frozenset({"strict", "allow_k", "ignore"})
 DUPLICATE_POLICIES = frozenset({"report", "ignore"})
+PERIOD_ESTIMATORS = frozenset({"robust", "least_squares"})
+DEFAULT_PERIOD_ESTIMATOR = "robust"
 
 REQUIRED_FIELDS = (
     "stream_id",
@@ -41,6 +43,7 @@ OPTIONAL_FIELDS = (
     "drift_tolerance_ms",
     "period_drift_tolerance_ms",
     "edge_tolerance_ms",
+    "period_estimator",
 )
 KNOWN_FIELDS = frozenset(REQUIRED_FIELDS + OPTIONAL_FIELDS)
 
@@ -68,6 +71,7 @@ class Contract:
     drift_tolerance_ms: int
     period_drift_tolerance_ms: int
     edge_tolerance_ms: int
+    period_estimator: str
 
     def display_path(self, path: Path) -> str:
         return display_path(path, self.base_dir)
@@ -242,6 +246,15 @@ def build_contract(
     edge = optional_tolerance(
         raw, "edge_tolerance_ms", jitter, config_path, field_lines, entry_line
     )
+    period_estimator = str(raw.get("period_estimator", DEFAULT_PERIOD_ESTIMATOR))
+    period_estimator = period_estimator.strip().lower()
+    if period_estimator not in PERIOD_ESTIMATORS:
+        raise _error(
+            "CFG_BAD_ENUM",
+            "period_estimator must be one of: least_squares, robust",
+            config_path,
+            line_of(field_lines, "period_estimator", entry_line),
+        )
     return Contract(
         stream_id=stream_id,
         source=source,
@@ -262,4 +275,5 @@ def build_contract(
         drift_tolerance_ms=drift,
         period_drift_tolerance_ms=period_drift,
         edge_tolerance_ms=edge,
+        period_estimator=period_estimator,
     )

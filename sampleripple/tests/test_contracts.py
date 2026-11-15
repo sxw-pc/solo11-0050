@@ -33,7 +33,32 @@ def test_minimal_contract_defaults(config_writer):
     assert contract.drift_tolerance_ms == 250
     assert contract.period_drift_tolerance_ms == 250
     assert contract.edge_tolerance_ms == 250
+    assert contract.period_estimator == "robust"
     assert contract.display_source == CLEAN_FILE.relative_to(PROJECT_ROOT).as_posix()
+
+
+def test_period_estimator_accepts_least_squares(config_writer):
+    stream = _minimal()
+    stream["period_estimator"] = "least_squares"
+    path = config_writer([stream])
+    assert load_config(path).streams[0].period_estimator == "least_squares"
+
+
+def test_period_estimator_is_case_insensitive(config_writer):
+    stream = _minimal()
+    stream["period_estimator"] = " ROBUST "
+    path = config_writer([stream])
+    assert load_config(path).streams[0].period_estimator == "robust"
+
+
+def test_period_estimator_rejects_unknown_value(config_writer):
+    stream = _minimal()
+    stream["period_estimator"] = "huber"
+    path = config_writer([stream])
+    with pytest.raises(AppError) as caught:
+        load_config(path)
+    assert caught.value.code == "CFG_BAD_ENUM"
+    assert caught.value.line is not None
 
 
 def test_contract_rejects_bad_time_format(config_writer):

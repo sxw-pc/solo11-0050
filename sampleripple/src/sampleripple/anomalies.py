@@ -233,18 +233,23 @@ def _drift(contract: Contract, timeline: GroupTimeline) -> list[Anomaly]:
 
 def _period_drift(contract: Contract, timeline: GroupTimeline) -> list[Anomaly]:
     fit = timeline.period_fit_ms
-    if fit is None:
+    last_slot = timeline.fit_last_slot
+    if fit is None or last_slot is None:
         return []
     if abs(fit - contract.nominal_period_ms) <= contract.period_drift_tolerance_ms:
         return []
-    last = timeline.unique_points[-1]
-    last_slot = timeline.slots[-1]
+    last = timeline.fit_points[-1]
     expected = timeline.expected_ms(last_slot)
+    label = (
+        "least_squares"
+        if timeline.period_estimator == "least_squares"
+        else "robust"
+    )
     return [
         _anomaly(
-            contract, timeline, "PERIOD_DRIFT_FIT", len(timeline.unique_points) - 1,
+            contract, timeline, "PERIOD_DRIFT_FIT", len(timeline.fit_points) - 1,
             expected, last.ts_ms, "error",
-            f"least_squares_period_ms={fit:.3f}", fit_period_ms=fit,
+            f"{label}_period_ms={fit:.3f}", fit_period_ms=fit,
         )
     ]
 

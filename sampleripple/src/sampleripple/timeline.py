@@ -26,6 +26,10 @@ class GroupTimeline:
     alignment_offset_ms: float
     period_fit_ms: float | None
     nominal_period_ms: int
+    period_estimator: str
+    fit_points: tuple[Point, ...]
+    fit_slots: tuple[int, ...]
+    fit_last_slot: int | None
 
     def expected_ms(self, slot: int) -> int:
         return self.anchor_ms + slot * self.nominal_period_ms
@@ -47,11 +51,30 @@ def _alignment_offset(points: Iterable[Point], period_ms: int) -> float:
     return float(median(residuals)) if residuals else 0.0
 
 
-def _period_fit(unique_points: tuple[Point, ...], slots: tuple[int, ...]) -> float | None:
-    if len(unique_points) < 2 or len(set(slots)) < 2:
+def _slot_dedup(
+    points: tuple[Point, ...], slots: tuple[int, ...]
+) -> tuple[tuple[Point, ...], tuple[int, ...]]:
+    """Keep one representative point per slot: the first record in input order."""
+
+    kept_points: list[Point] = []
+    kept_slots: list[int] = []
+    seen_slots: set[int] = set()
+    for point, slot in zip(points, slots):
+        if slot in seen_slots:
+            continue
+        seen_slots.add(slot)
+        kept_points.append(point)
+        kept_slots.append(slot)
+    return tuple(kept_points), tuple(kept_slots)
+
+
+def _least_squares_fit(
+    fit_points: tuple[Point, ...], fit_slots: tuple[int, ...]
+) -> float | None:
+    if len(fit_points) < 2 or len(set(fit_slots)) < 2:
         return None
-    xs = [float(slot) for slot in slots]
-    ys = [float(point.ts_ms - unique_points[0].ts_ms) for point in unique_points]
+    xs = [float(slot) for slot in fit_slots]
+    ys = [float(point.ts_ms - fit_points[0].ts_ms) for point in fit_points]
     x_mean = sum(xs) / len(xs)
     y_mean = sum(ys) / len(ys)
     numerator = sum((x - x_mean) * (y - y_mean) for x, y in zip(xs, ys))
@@ -61,7 +84,44 @@ def _period_fit(unique_points: tuple[Point, ...], slots: tuple[int, ...]) -> flo
     return numerator / denominator
 
 
-def build_timeline(group: tuple[str, ...], points: Iterable[Point], period_ms: int) -> GroupTimeline:
+def _theilsen_fit(
+    fit_points: tuple[Point, ...], fit_slots: tuple[int, ...]
+) -> float | None:
+    """Median pairwise slope: a single outlier cannot move the median."""
+
+    if len(fit_points) < 2 or len(set(fit_slots)) < 2:
+        return None
+    base_ts = fit_points[0].ts_ms
+    slopes = [
+        float(
+            (fit_points[j].ts_ms - fit_points[i].ts_ms)
+            / (fit_slots[j] - fit_slots[i])
+        )
+        for i in range(len(fit_points))
+        for j in range(i + 1, len(fit_points))
+        if fit_slots[j] != fit_slots[i]
+    ]
+    if not slopes:
+        return None
+    return float(median(slopes))
+
+
+def _period_fit(
+    estimator: str,
+    fit_points: tuple[Point, ...],
+    fit_slots: tuple[int, ...],
+) -> float | None:
+    if estimator == "least_squares":
+        return _least_squares_fit(fit_points, fit_slots)
+    return _theilsen_fit(fit_points, fit_slots)
+
+
+def build_timeline(
+    group: tuple[str, ...],
+    points: Iterable[Point],
+    period_ms: int,
+    estimator: str = "robust",
+) -> GroupTimeline:
     raw_points = tuple(sorted(points, key=lambda point: point.ordinal))
     if not raw_points:
         raise ValueError("cannot build a timeline without points")
@@ -79,6 +139,9 @@ def build_timeline(group: tuple[str, ...], points: Iterable[Point], period_ms: i
     slots = tuple(_slot_for(point.ts_ms, anchor, period_ms) for point in unique)
     present = set(slots)
     missing = tuple(slot for slot in range(expected_points) if slot not in present)
+    fit_points, fit_slots = _slot_dedup(unique, slots)
+    period_fit_ms = _period_fit(estimator, fit_points, fit_slots)
+    fit_last_slot = fit_slots[-1] if period_fit_ms is not None else None
     return GroupTimeline(
         group=group,
         group_key="/".join(group),
@@ -91,8 +154,12 @@ def build_timeline(group: tuple[str, ...], points: Iterable[Point], period_ms: i
         expected_points=expected_points,
         missing_slots=missing,
         alignment_offset_ms=_alignment_offset(unique, period_ms),
-        period_fit_ms=_period_fit(unique, slots),
+        period_fit_ms=period_fit_ms,
         nominal_period_ms=period_ms,
+        period_estimator=estimator,
+        fit_points=fit_points,
+        fit_slots=fit_slots,
+        fit_last_slot=fit_last_slot,
     )
 
 
@@ -104,7 +171,10 @@ def build_timelines(points: Iterable[Point], contract: Contract) -> tuple[GroupT
         group_tuples.setdefault(point.group_key, point.group)
     timelines = [
         build_timeline(
-            group_tuples[key], grouped[key], contract.nominal_period_ms
+            group_tuples[key],
+            grouped[key],
+            contract.nominal_period_ms,
+            contract.period_estimator,
         )
         for key in sorted(grouped)
     ]

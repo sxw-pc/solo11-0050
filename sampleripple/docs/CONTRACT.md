@@ -38,6 +38,7 @@
 | `drift_tolerance_ms` | int | 否 | DRIFT 阈值；默认 `jitter_tolerance_ms` |
 | `period_drift_tolerance_ms` | int | 否 | 周期拟合偏差阈值；默认 `jitter_tolerance_ms` |
 | `edge_tolerance_ms` | int | 否 | 首末边界偏移阈值；默认 `jitter_tolerance_ms` |
+| `period_estimator` | enum | 否 | 周期估计模式：`robust`（默认）/ `least_squares` |
 
 `time_field`、`sequence_field`、`group_by` 必须指向不同字段。`group_by` 字段值按声明顺序以 `/` 连接为 `group_key`。
 
@@ -73,6 +74,15 @@
 - `duplicate_policy: ignore`：不产生重复异常，但重复行仍计入 `actual_points`，统计中保留。
 
 `GAP` 与 `MISSING` 可以同时触发：前者看相邻实际间隔，后者看声明网格槽。二者语义不同，不互相抑制。
+
+## 4.1 周期估计模式（`period_estimator`）
+
+周期拟合（`period_fit_ms` 与 `PERIOD_DRIFT_FIT` 判定）先按槽位对唯一样本去重：同一槽位只保留输入顺序中的第一条代表点，多余残差不重复进入估计。估计量随后在这份代表点集合上计算，并以同一集合的末槽位 `last_slot` 作为异常引用点，保证报告数值与判定口径自洽。
+
+- `robust`（默认）：Theil–Sen 估计量，取全部代表点两两斜率的中位数。单个离群点（例如相对标称偏移一个完整周期）最多贡献一小部分斜率，无法拉动中位数；输出由排序决定，确定且无随机步骤。
+- `least_squares`：保留历史口径，对代表点做槽位–时间最小二乘线性回归，斜率即拟合周期。
+
+两种模式的输入都是槽位去重后的同一份代表点集合；少于两个不同槽位时不产出拟合值，也不触发 `PERIOD_DRIFT_FIT`。模式只影响周期估计与由其派生的判定，不改变槽位、缺失、对齐等其他口径。
 
 ## 5. 输入安全
 

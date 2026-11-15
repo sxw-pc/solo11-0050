@@ -62,8 +62,8 @@ OK: line budgets satisfied
 ```text
 report.config_hash:            sha256:26c9dfc7266e3c6276bbd868929d7f27f9e62fcbe32abd9951c314f831691c5f
 manifest.config_hash:          sha256:26c9dfc7266e3c6276bbd868929d7f27f9e62fcbe32abd9951c314f831691c5f
-manifest.baseline_sha256:      sha256:5f7cf6a40b1ed8ca4b6678bd964898b0f3e5fa89534527c6ee573098f1ccb933
-baseline.json 实际 SHA-256:    sha256:5f7cf6a40b1ed8ca4b6678bd964898b0f3e5fa89534527c6ee573098f1ccb933
+manifest.baseline_sha256:      sha256:fff09bb5c4493d454bd7b594363afbf60b3c149e54adfdd2aa3347d7cda9a765
+baseline.json 实际 SHA-256:    sha256:fff09bb5c4493d454bd7b594363afbf60b3c149e54adfdd2aa3347d7cda9a765
 tool:                          sampleripple 0.1.0
 ```
 

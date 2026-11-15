@@ -122,21 +122,33 @@ trigger     = skew > edge_tolerance_ms
 
 ## 7. PERIOD_DRIFT — `PERIOD_DRIFT_FIT`
 
-对唯一样本做最小二乘：
+先对唯一样本按槽位去重：同一槽位只保留输入顺序中的第一条代表点，配对只在这份代表点集合上进行，同槽位的多余残差不会重复进入估计。记代表点为 `(x_k, t_k)`，`x_k = slot(t_k)`，末槽位为 `last_slot`。
+
+`least_squares` 模式（契约 `period_estimator: least_squares`）：
 
 ```text
-x_j = slot(t_j)
-y_j = t_j - a
-slope = sum((x_j - x_bar)(y_j - y_bar)) / sum((x_j - x_bar)^2)
+y_k = t_k - a
+slope = sum((x_k - x_bar)(y_k - y_bar)) / sum((x_k - x_bar)^2)
+```
+
+`robust` 模式（默认）采用 Theil–Sen 估计量，取全部代表点两两斜率的中位数：
+
+```text
+slope = median { (t_j - t_i) / (x_j - x_i) | i < j, x_j != x_i }
+```
+
+单个离群点只能影响包含它的那部分配对斜率，无法移动中位数，因此混合抖动或局部乱序样本中的整周期偏离不会把估计带偏。两种模式的判定条件相同：
+
+```text
 trigger = abs(slope - P) > period_drift_tolerance_ms
 ```
 
 至少需要两个不同槽位；否则不判定。  
-**索引：** 末唯一样本下标。`expected_ms = a + P * last_slot`，`actual_ms = last`，`delta_ms = actual - expected`，并附带 `fit_period_ms`。  
+**索引：** 末代表点在代表点集合中的下标。`expected_ms = a + P * last_slot`，`actual_ms = last`，`delta_ms = actual - expected`，并附带 `fit_period_ms`；异常的 `expected_ms`、分组 `period_fit_ms` 与判定值来自同一份代表点集合与同一个 `last_slot`。  
 **严重级别：** `error`。  
 **含义：** 观测到的真实周期速率偏离标称周期，即使每个相邻间隔都在 `gap_tolerance_ms` 内也可能触发。
 
-**误判提示：** 极短序列的拟合方差小，抖动容易被放大成斜率偏差；应结合 `DRIFT_CUMULATIVE` 和更长窗口判断。缺失槽不会扭曲 `x`，因为拟合以槽位而不是实际行号为横轴。
+**误判提示：** 极短序列的拟合方差小，抖动容易被放大成斜率偏差；应结合 `DRIFT_CUMULATIVE` 和更长窗口判断。缺失槽不会扭曲 `x`，因为拟合以槽位而不是实际行号为横轴。默认的 `robust` 模式对单点离群不敏感；若需要与历史最小二乘口径逐字节对齐，显式声明 `period_estimator: least_squares`。
 
 ## 8. 严重级别
 

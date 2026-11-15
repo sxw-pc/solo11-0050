@@ -85,3 +85,88 @@ def test_top_level_anomaly_list_matches_streams(demo_report):
     ]
     assert demo_report["anomalies"] == flattened
     assert len(flattened) == demo_report["summary"]["anomaly_count"]
+
+
+def _outlier_report(config_writer, tmp_path, estimator: str) -> dict:
+    # Ten clean grid points plus one leverage outlier whose offset is close to
+    # a full nominal period; tolerances are tuned so only PERIOD_DRIFT fires.
+    rows = ["site,line,sensor,seq,ts,value"]
+    for slot in range(10):
+        rows.append(f"s,l,x,{slot},{slot * 60000},{slot}.0")
+    rows.append(f"s,l,x,10,{10 * 60000 + 25000},10.0")
+    source = tmp_path / "outlier.csv"
+    source.write_text("\n".join(rows) + "\n", encoding="utf-8", newline="\n")
+    from conftest import default_stream
+
+    stream = default_stream(
+        source,
+        stream_id="outlier-run",
+        missing_policy="ignore",
+        disorder_window=0,
+        duplicate_policy="ignore",
+        drift_tolerance_ms=100000,
+        period_drift_tolerance_ms=500,
+        edge_tolerance_ms=100000,
+        gap_tolerance_ms=100000,
+        period_estimator=estimator,
+    )
+    config = config_writer([stream])
+    from sampleripple.config import load_config
+    from sampleripple.engine import run_verification
+    from sampleripple.report_json import build_report
+
+    return build_report(run_verification(load_config(config)))
+
+
+def _period_drift(report: dict) -> dict | None:
+    anomalies = report["streams"][0]["anomalies"]
+    matches = [item for item in anomalies if item["rule_id"] == "PERIOD_DRIFT_FIT"]
+    return matches[0] if matches else None
+
+
+def test_robust_estimator_keeps_period_drift_silent_on_single_outlier(
+    config_writer, tmp_path
+):
+    report = _outlier_report(config_writer, tmp_path, "robust")
+    group = report["streams"][0]["groups"][0]
+    assert group["period_fit_ms"] == pytest.approx(60000.0)
+    assert _period_drift(report) is None
+    assert group["status"] == "ok"
+
+
+def test_least_squares_estimator_flags_the_same_outlier(config_writer, tmp_path):
+    report = _outlier_report(config_writer, tmp_path, "least_squares")
+    group = report["streams"][0]["groups"][0]
+    anomaly = _period_drift(report)
+    assert group["period_fit_ms"] == pytest.approx(61136.364, abs=1e-3)
+    assert anomaly is not None
+    assert anomaly["fit_period_ms"] == group["period_fit_ms"]
+    assert anomaly["detail"] == "least_squares_period_ms=61136.364"
+    assert group["status"] == "anomalous"
+
+
+def test_period_drift_expected_ms_uses_the_fit_last_slot(config_writer, tmp_path):
+    report = _outlier_report(config_writer, tmp_path, "least_squares")
+    anomaly = _period_drift(report)
+    assert anomaly["index"] == 10
+    assert anomaly["expected_ms"] == 10 * 60000
+    assert anomaly["actual_ms"] == 10 * 60000 + 25000
+    assert anomaly["delta_ms"] == 25000
+
+
+def test_robust_detail_labels_the_estimator_on_drift_fixture(demo_report):
+    drift = next(
+        item
+        for stream in demo_report["streams"]
+        if stream["stream_id"] == "drift-run"
+        for item in stream["anomalies"]
+        if item["rule_id"] == "PERIOD_DRIFT_FIT"
+    )
+    group = next(
+        group
+        for stream in demo_report["streams"]
+        if stream["stream_id"] == "drift-run"
+        for group in stream["groups"]
+    )
+    assert drift["detail"] == "robust_period_ms=60300.000"
+    assert drift["fit_period_ms"] == group["period_fit_ms"] == 60300.0
