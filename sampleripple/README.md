@@ -47,7 +47,11 @@ pytest -q
 curl http://127.0.0.1:8765/healthz
 curl "http://127.0.0.1:8765/runs?limit=10&offset=0"
 curl "http://127.0.0.1:8765/runs/1/anomalies?rule_id=GAP_ADJACENT"
+curl "http://127.0.0.1:8765/runs/1/anomalies?group_key=site-a/line-07/sensor-x&category=GAP&limit=10"
 ```
+
+异常查询的 `rule_id`、`group_key`、`category` 按 AND 组合，返回顺序与同一 run 的
+`report.json` 异常数组逐条对齐，`limit`/`offset` 翻页不重叠不漏项。
 
 ## 配置示例
 

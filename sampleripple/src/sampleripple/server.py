@@ -11,6 +11,7 @@ from typing import Any
 from urllib.parse import parse_qs, urlsplit
 
 from . import __version__
+from .anomalies import CATEGORIES
 from .config import AppConfig, LOOPBACK_HOSTS
 from .errors import AppError
 from .ledger import get_run, list_anomalies, list_runs
@@ -40,6 +41,31 @@ def _query_int(query: dict[str, list[str]], name: str, default: int) -> int:
         return int(values[0])
     except (TypeError, ValueError) as exc:
         raise AppError("HTTP_BAD_QUERY", f"{name} must be an integer") from exc
+
+
+def _query_value(query: dict[str, list[str]], name: str) -> str | None:
+    values = query.get(name)
+    return values[0] if values else None
+
+
+def _category_filter(query: dict[str, list[str]]) -> str | None:
+    raw = _query_value(query, "category")
+    if raw is None:
+        return None
+    category = raw.strip().upper()
+    if category not in CATEGORIES:
+        raise AppError(
+            "HTTP_BAD_QUERY",
+            "category must be one of " + ", ".join(CATEGORIES),
+        )
+    return category
+
+
+def _group_key_filter(query: dict[str, list[str]]) -> str | None:
+    group_key = _query_value(query, "group_key")
+    if group_key is not None and not group_key.strip():
+        raise AppError("HTTP_BAD_QUERY", "group_key must not be blank")
+    return group_key
 
 
 class RippleHTTPServer(ThreadingHTTPServer):
@@ -119,15 +145,24 @@ def _make_handler(db_path: Path) -> type[BaseHTTPRequestHandler]:
                 self._error(404, "RUN_NOT_FOUND", f"run {run_id} not found")
                 return
             limit, offset = self._pagination(query)
-            rule_values = query.get("rule_id")
-            rule_id = rule_values[0] if rule_values else None
+            rule_id = _query_value(query, "rule_id")
+            group_key = _group_key_filter(query)
+            category = _category_filter(query)
             anomalies, total = list_anomalies(
-                db_path, run_id, rule_id=rule_id, limit=limit, offset=offset
+                db_path,
+                run_id,
+                rule_id=rule_id,
+                group_key=group_key,
+                category=category,
+                limit=limit,
+                offset=offset,
             )
             self._send_json(
                 200,
                 {
                     "anomalies": anomalies,
+                    "category": category,
+                    "group_key": group_key,
                     "limit": limit,
                     "offset": offset,
                     "rule_id": rule_id,

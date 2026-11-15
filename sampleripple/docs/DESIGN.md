@@ -133,11 +133,18 @@ CREATE TABLE anomalies (
     rule_id TEXT NOT NULL,
     category TEXT NOT NULL,
     severity TEXT NOT NULL,
+    report_seq INTEGER,
     FOREIGN KEY (run_id) REFERENCES runs(run_id)
 );
 ```
 
-辅助索引：`(run_id, rule_id)` 与 `(run_id)`。HTTP 和 `runs` 子命令只执行查询。
+`report_seq` 是异常在本次 run 的 report.json `anomalies` 数组中的位置（从 0 开始），
+随插入一并落库。查询按 `COALESCE(report_seq, anomaly_pk), anomaly_pk` 排序，因此任意
+过滤条件都产出 report 有序子序列，翻页稳定；排序键中的 `detail` 与规则序等未落库列
+由该序号完整保留。旧版台账缺少该列时，`ensure_schema` 仅以 `ALTER TABLE ADD COLUMN`
+补齐（不 UPDATE/DELETE），旧行保持 NULL 并回退到 `anomaly_pk` 序（即其 report 序）。
+
+辅助索引：`(run_id, rule_id)`、`(run_id)` 与 `(run_id, report_seq)`。HTTP 和 `runs` 子命令只执行查询。
 
 ## 7. 确定性保证
 
@@ -155,7 +162,7 @@ CREATE TABLE anomalies (
 
 - `GET /healthz`
 - `GET /runs?limit=1..100&offset>=0`
-- `GET /runs/{run_id}/anomalies?rule_id=...&limit=...&offset=...`
+- `GET /runs/{run_id}/anomalies?rule_id=...&group_key=...&category=...&limit=...&offset=...`（过滤条件按 AND 组合；`group_key` 空白或 `category` 未知返回 400）
 
 未知路由或未知 run 返回 404；非 GET 返回 405；参数错误返回 400。响应不包含源数据原始行，也不提供写路径。
 
