@@ -7,6 +7,9 @@ from typing import Any, Mapping
 
 from .errors import AppError
 
+COVERAGE_MODES = frozenset({"observed_span", "declared_window"})
+WINDOW_FIELDS = ("coverage_window_start_ms", "coverage_window_end_ms")
+
 
 def line_of(
     field_lines: Mapping[str, int], field: str, fallback: int | None
@@ -111,3 +114,54 @@ def optional_tolerance(
             config_path, line_of(lines, field, fallback),
         )
     return value
+
+
+def coverage_settings(
+    raw: Mapping[str, Any],
+    *,
+    config_path: str | Path,
+    lines: Mapping[str, int],
+    fallback: int | None,
+) -> tuple[str, int | None, int | None]:
+    """Validate the coverage mode and its declared-window endpoints."""
+
+    mode = str(raw.get("coverage_mode", "observed_span")).strip().lower()
+    if mode not in COVERAGE_MODES:
+        raise config_error(
+            "CFG_BAD_ENUM",
+            "coverage_mode must be one of: declared_window, observed_span",
+            config_path, line_of(lines, "coverage_mode", fallback),
+        )
+    for field in WINDOW_FIELDS:
+        if field in raw and (
+            isinstance(raw[field], bool) or not isinstance(raw[field], int)
+        ):
+            raise config_error(
+                "CFG_BAD_TYPE", f"{field} must be an integer",
+                config_path, line_of(lines, field, fallback),
+            )
+    if mode == "declared_window":
+        for field in WINDOW_FIELDS:
+            if field not in raw:
+                raise config_error(
+                    "CFG_MISSING_FIELD",
+                    f"{field} is required when coverage_mode is 'declared_window'",
+                    config_path, line_of(lines, field, fallback),
+                )
+        start = raw["coverage_window_start_ms"]
+        end = raw["coverage_window_end_ms"]
+        if end < start:
+            raise config_error(
+                "CFG_BAD_TYPE",
+                "coverage_window_end_ms must be >= coverage_window_start_ms",
+                config_path, line_of(lines, "coverage_window_end_ms", fallback),
+            )
+        return mode, start, end
+    present = next((field for field in WINDOW_FIELDS if field in raw), None)
+    if present is not None:
+        raise config_error(
+            "CFG_BAD_TYPE",
+            f"{present} is only allowed when coverage_mode is 'declared_window'",
+            config_path, line_of(lines, present, fallback),
+        )
+    return mode, None, None

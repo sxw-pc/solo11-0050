@@ -1,0 +1,6 @@
+site,line,sensor,seq,ts,value
+site-c,line-09,sensor-z,0,1717459200000,0.500
+site-c,line-09,sensor-z,1,1717459260000,1.500
+site-d,line-10,sensor-w,0,1717459200000,0.250
+site-d,line-10,sensor-w,1,1717459260000,1.250
+site-d,line-10,sensor-w,2,1717459320000,2.250

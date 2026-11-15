@@ -82,6 +82,9 @@ def _stream_dict(stream: StreamRun) -> dict[str, object]:
     expected_points = sum(item["expected_points"] for item in groups)
     return {
         "anomalies": [anomaly_dict(anomaly) for anomaly in stream.anomalies],
+        "coverage_mode": contract.coverage_mode,
+        "coverage_window_end_ms": contract.coverage_window_end_ms,
+        "coverage_window_start_ms": contract.coverage_window_start_ms,
         "group_by": list(contract.group_by),
         "groups": groups,
         "nominal_period_ms": contract.nominal_period_ms,

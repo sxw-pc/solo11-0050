@@ -1,6 +1,6 @@
 {
   "baseline_report": "baseline.json",
-  "baseline_sha256": "sha256:5f7cf6a40b1ed8ca4b6678bd964898b0f3e5fa89534527c6ee573098f1ccb933",
+  "baseline_sha256": "sha256:d00d8bbd8f5c852c93a0c31d67613ba776a1c5e2f83a253f1bdee0486fdee0ec",
   "config_hash": "sha256:26c9dfc7266e3c6276bbd868929d7f27f9e62fcbe32abd9951c314f831691c5f",
   "note": "Reviewed report generated from configs/demo.yaml without runtime fields.",
   "tool": {

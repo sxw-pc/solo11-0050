@@ -1,0 +1,27 @@
+version: 1
+base_dir: ..
+ledger:
+  db_path: var/coverage.db
+server:
+  host: 127.0.0.1
+  port: 8767
+streams:
+  - stream_id: declared-window-run
+    source: fixtures/samples/declared/2024-06-07.csv
+    format: csv
+    time_field: ts
+    time_format: epoch_ms
+    sequence_field: seq
+    group_by: [site, line, sensor]
+    nominal_period_ms: 60000
+    jitter_tolerance_ms: 500
+    gap_tolerance_ms: 1000
+    missing_policy: strict
+    disorder_window: 2
+    duplicate_policy: report
+    drift_tolerance_ms: 500
+    period_drift_tolerance_ms: 200
+    edge_tolerance_ms: 500
+    coverage_mode: declared_window
+    coverage_window_start_ms: 1717459200000
+    coverage_window_end_ms: 1717459800000

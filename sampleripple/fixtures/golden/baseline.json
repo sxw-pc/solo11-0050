@@ -217,6 +217,9 @@
   "streams": [
     {
       "anomalies": [],
+      "coverage_mode": "observed_span",
+      "coverage_window_end_ms": null,
+      "coverage_window_start_ms": null,
       "group_by": [
         "site",
         "line",
@@ -411,6 +414,9 @@
           "stream_id": "drift-run"
         }
       ],
+      "coverage_mode": "observed_span",
+      "coverage_window_end_ms": null,
+      "coverage_window_start_ms": null,
       "group_by": [
         "site",
         "line",
@@ -510,6 +516,9 @@
           "stream_id": "gap-run"
         }
       ],
+      "coverage_mode": "observed_span",
+      "coverage_window_end_ms": null,
+      "coverage_window_start_ms": null,
       "group_by": [
         "site",
         "line",
@@ -595,6 +604,9 @@
           "stream_id": "dup-run"
         }
       ],
+      "coverage_mode": "observed_span",
+      "coverage_window_end_ms": null,
+      "coverage_window_start_ms": null,
       "group_by": [
         "site",
         "line",
@@ -680,6 +692,9 @@
           "stream_id": "disorder-run"
         }
       ],
+      "coverage_mode": "observed_span",
+      "coverage_window_end_ms": null,
+      "coverage_window_start_ms": null,
       "group_by": [
         "site",
         "line",
@@ -807,6 +822,9 @@
           "stream_id": "mixed-run"
         }
       ],
+      "coverage_mode": "observed_span",
+      "coverage_window_end_ms": null,
+      "coverage_window_start_ms": null,
       "group_by": [
         "site",
         "line",

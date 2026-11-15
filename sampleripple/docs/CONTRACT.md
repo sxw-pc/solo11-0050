@@ -38,6 +38,9 @@
 | `drift_tolerance_ms` | int | 否 | DRIFT 阈值；默认 `jitter_tolerance_ms` |
 | `period_drift_tolerance_ms` | int | 否 | 周期拟合偏差阈值；默认 `jitter_tolerance_ms` |
 | `edge_tolerance_ms` | int | 否 | 首末边界偏移阈值；默认 `jitter_tolerance_ms` |
+| `coverage_mode` | enum | 否 | `observed_span`（默认）/ `declared_window`，决定预期槽区间的覆盖口径 |
+| `coverage_window_start_ms` | int | 条件必填 | 声明窗起点（epoch 毫秒）；仅 `declared_window` 允许且必填 |
+| `coverage_window_end_ms` | int | 条件必填 | 声明窗终点（epoch 毫秒）；仅 `declared_window` 允许且必填，须 `>=` 起点 |
 
 `time_field`、`sequence_field`、`group_by` 必须指向不同字段。`group_by` 字段值按声明顺序以 `/` 连接为 `group_key`。
 
@@ -73,6 +76,21 @@
 - `duplicate_policy: ignore`：不产生重复异常，但重复行仍计入 `actual_points`，统计中保留。
 
 `GAP` 与 `MISSING` 可以同时触发：前者看相邻实际间隔，后者看声明网格槽。二者语义不同，不互相抑制。
+
+### 4.1 覆盖口径（`coverage_mode`）
+
+`expected_points` 与 `missing_slots` 的槽区间按两种口径重建，锚点与槽位映射规则不变（`slot(t) = round_half_up((t - anchor) / P)`）：
+
+- `observed_span`（默认）：`anchor` 取分组首点，区间为 `[0, floor((last - anchor) / P)]`，即只按实测跨度铺槽，沿用历史语义。
+- `declared_window`：`anchor` 取 `coverage_window_start_ms`，从声明窗起点到终点按 `nominal_period_ms` 铺槽，区间为
+  `[0, floor((coverage_window_end_ms - coverage_window_start_ms) / P)]`。声明窗只落少量样本时，窗口内整段缺失都会进入 `missing_slots`，不再被实测跨度掩盖。`alignment_offset_ms` 与 `period_fit_ms` 的定义不变。
+
+`declared_window` 下每个实际点映射的槽必须落在新区间内，`missing_slots` 恰为区间内未被任何实际点占用的槽；同一点不会既占槽又计缺失。两类无法自洽的输入以稳定错误码 `COVERAGE_WINDOW_MISMATCH` 失败，绝不静默丢点：
+
+1. 声明窗与实测跨度 `[first, last]` 完全无交集；
+2. 某实际点相对声明窗起点映射到负槽，或映射到超过声明窗上界的槽。
+
+`observed_span` 模式下出现 `coverage_window_start_ms` / `coverage_window_end_ms` 会以 `CFG_BAD_TYPE` 拒绝；`declared_window` 缺少任一端点以 `CFG_MISSING_FIELD` 拒绝，终点早于起点以 `CFG_BAD_TYPE` 拒绝，非法枚举以 `CFG_BAD_ENUM` 拒绝。
 
 ## 5. 输入安全
 
@@ -157,6 +175,7 @@ streams:
 | 错误码 | 含义 |
 | --- | --- |
 | `INPUT_MUTATED` | 源文件在核验期间发生变化 |
+| `COVERAGE_WINDOW_MISMATCH` | 声明窗与实测跨度无交集，或实际点映射到区间外（负槽/越界）槽位 |
 | `GOLDEN_MISSING` | golden baseline 文件不存在 |
 | `GOLDEN_BAD_JSON` | baseline 不是可解析 JSON |
 | `SRV_BAD_HOST` | 服务绑定时地址不是回环 |

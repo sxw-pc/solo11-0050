@@ -82,6 +82,8 @@ streams:
 
 `source` 与 `ledger.db_path` 的相对路径以 `base_dir` 为基准；未声明 `base_dir` 时以配置文件所在目录为基准。所有示例键值均为合成占位符。
 
+覆盖口径由可选字段 `coverage_mode` 控制：缺省 `observed_span` 按分组实测首末跨度铺槽；设为 `declared_window` 时必须同时给出 `coverage_window_start_ms` 与 `coverage_window_end_ms`，预期槽与缺失槽按整个声明窗重建，声明窗内整段缺采不会被实测跨度掩盖。声明窗与实测无交集、或实际点映射到区间外槽位时以稳定错误码 `COVERAGE_WINDOW_MISMATCH` 失败。完整示例见 `configs/coverage.yaml`。
+
 ## 异常类别
 
 | 类别 | 稳定 rule_id | 判定摘要 |
@@ -90,7 +92,7 @@ streams:
 | `DRIFT` | `DRIFT_CUMULATIVE` | 最近至多 100 个点的有符号相位残差均值超过 `drift_tolerance_ms` |
 | `DUPLICATE` | `DUPLICATE_POINT` | 同组同时间戳或同 sequence 重复出现 |
 | `DISORDER` | `DISORDER_LOCAL` | 原始输入顺序在 `disorder_window` 内出现时间逆序 |
-| `MISSING` | `MISSING_SLOT` | 按时间跨度声明的网格槽缺失，超过 `missing_policy` 容忍度 |
+| `MISSING` | `MISSING_SLOT` | 按覆盖口径（`coverage_mode`：实测跨度或声明窗）重建的网格槽缺失，超过 `missing_policy` 容忍度 |
 | `EDGE_SKEW` | `EDGE_SKEW_HEAD` / `EDGE_SKEW_TAIL` | 组首/末样本偏离最近的标称边界超过 `edge_tolerance_ms` |
 | `PERIOD_DRIFT` | `PERIOD_DRIFT_FIT` | 最小二乘拟合周期与标称周期偏差超过 `period_drift_tolerance_ms` |
 

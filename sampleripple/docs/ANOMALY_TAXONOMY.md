@@ -85,12 +85,15 @@ delta    = actual - expected  # 负数
 
 ## 5. MISSING — `MISSING_SLOT`
 
-**判定：** 组内时间跨度为 `[a, last]`，期望槽位共：
+**判定：** 槽区间由契约的 `coverage_mode` 决定，锚点 `a` 在 `observed_span` 下为组内最早样本，在 `declared_window` 下为 `coverage_window_start_ms`：
 
 ```text
-expected_points = floor((last - a) / P) + 1
+observed_span:  expected_points = floor((last - a) / P) + 1
+declared_window: expected_points = floor((coverage_window_end_ms - a) / P) + 1
 missing_slots   = {0..expected_points-1} \ {slot(t) for t in unique_points}
 ```
+
+`declared_window` 下缺失槽覆盖整个声明窗，窗口内整段缺采不会被实测跨度掩盖；占槽与缺失互斥。声明窗与实测跨度无交集、或某点映射到负槽/越界槽时以 `COVERAGE_WINDOW_MISMATCH` 失败，不静默丢点。
 
 - `strict`：任一缺失报 `error`。
 - `allow_k`：缺失数 `<= missing_allow_k` 不报；超限时逐槽报 `warning`。

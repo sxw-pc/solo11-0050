@@ -7,6 +7,7 @@ from statistics import median
 from typing import Iterable
 
 from .contracts import Contract
+from .errors import AppError
 from .loaders import Point
 from .util.timeutil import nearest_boundary_ms, round_half_up
 
@@ -26,6 +27,9 @@ class GroupTimeline:
     alignment_offset_ms: float
     period_fit_ms: float | None
     nominal_period_ms: int
+    coverage_mode: str
+    coverage_window_start_ms: int | None
+    coverage_window_end_ms: int | None
 
     def expected_ms(self, slot: int) -> int:
         return self.anchor_ms + slot * self.nominal_period_ms
@@ -61,7 +65,19 @@ def _period_fit(unique_points: tuple[Point, ...], slots: tuple[int, ...]) -> flo
     return numerator / denominator
 
 
-def build_timeline(group: tuple[str, ...], points: Iterable[Point], period_ms: int) -> GroupTimeline:
+def _coverage_error(group_key: str, message: str) -> AppError:
+    return AppError("COVERAGE_WINDOW_MISMATCH", message, path=group_key)
+
+
+def build_timeline(
+    group: tuple[str, ...],
+    points: Iterable[Point],
+    period_ms: int,
+    *,
+    coverage_mode: str = "observed_span",
+    coverage_window_start_ms: int | None = None,
+    coverage_window_end_ms: int | None = None,
+) -> GroupTimeline:
     raw_points = tuple(sorted(points, key=lambda point: point.ordinal))
     if not raw_points:
         raise ValueError("cannot build a timeline without points")
@@ -73,26 +89,71 @@ def build_timeline(group: tuple[str, ...], points: Iterable[Point], period_ms: i
             unique_points.append(point)
             seen_timestamps.add(point.ts_ms)
     unique = tuple(unique_points)
-    anchor = unique[0].ts_ms
-    last = unique[-1].ts_ms
-    expected_points = (last - anchor) // period_ms + 1
-    slots = tuple(_slot_for(point.ts_ms, anchor, period_ms) for point in unique)
+    group_key = "/".join(group)
+    observed_first = unique[0].ts_ms
+    observed_last = unique[-1].ts_ms
+    if coverage_mode == "declared_window":
+        assert coverage_window_start_ms is not None
+        assert coverage_window_end_ms is not None
+        anchor = coverage_window_start_ms
+        last_slot = (coverage_window_end_ms - anchor) // period_ms
+        slots = tuple(_slot_for(point.ts_ms, anchor, period_ms) for point in unique)
+        if observed_last < anchor or observed_first > coverage_window_end_ms:
+            raise _coverage_error(
+                group_key,
+                f"declared coverage window [{anchor}, {coverage_window_end_ms}] "
+                f"has no intersection with observed span "
+                f"[{observed_first}, {observed_last}]",
+            )
+        offending = next(
+            ((slot, point) for slot, point in zip(slots, unique) if slot < 0),
+            None,
+        )
+        if offending is not None:
+            slot, point = offending
+            raise _coverage_error(
+                group_key,
+                f"point at {point.ts_ms} maps to negative slot {slot} under "
+                f"declared window start {anchor}; expected_points would not "
+                f"cover it",
+            )
+        offending = next(
+            ((slot, point) for slot, point in zip(slots, unique) if slot > last_slot),
+            None,
+        )
+        if offending is not None:
+            slot, point = offending
+            raise _coverage_error(
+                group_key,
+                f"point at {point.ts_ms} maps to slot {slot} beyond declared "
+                f"window upper slot {last_slot} (window end "
+                f"{coverage_window_end_ms}); it must not be counted silently "
+                f"outside the interval",
+            )
+        expected_points = last_slot + 1
+    else:
+        anchor = observed_first
+        expected_points = (observed_last - anchor) // period_ms + 1
+        slots = tuple(_slot_for(point.ts_ms, anchor, period_ms) for point in unique)
     present = set(slots)
     missing = tuple(slot for slot in range(expected_points) if slot not in present)
     return GroupTimeline(
         group=group,
-        group_key="/".join(group),
+        group_key=group_key,
         raw_points=raw_points,
         points=ordered,
         unique_points=unique,
         slots=slots,
         anchor_ms=anchor,
-        last_ms=last,
+        last_ms=observed_last,
         expected_points=expected_points,
         missing_slots=missing,
         alignment_offset_ms=_alignment_offset(unique, period_ms),
         period_fit_ms=_period_fit(unique, slots),
         nominal_period_ms=period_ms,
+        coverage_mode=coverage_mode,
+        coverage_window_start_ms=coverage_window_start_ms,
+        coverage_window_end_ms=coverage_window_end_ms,
     )
 
 
@@ -104,7 +165,12 @@ def build_timelines(points: Iterable[Point], contract: Contract) -> tuple[GroupT
         group_tuples.setdefault(point.group_key, point.group)
     timelines = [
         build_timeline(
-            group_tuples[key], grouped[key], contract.nominal_period_ms
+            group_tuples[key],
+            grouped[key],
+            contract.nominal_period_ms,
+            coverage_mode=contract.coverage_mode,
+            coverage_window_start_ms=contract.coverage_window_start_ms,
+            coverage_window_end_ms=contract.coverage_window_end_ms,
         )
         for key in sorted(grouped)
     ]

@@ -8,6 +8,7 @@ from typing import Any, Mapping
 
 from .contract_fields import (
     config_error,
+    coverage_settings,
     enum_value,
     line_of,
     optional_tolerance,
@@ -41,6 +42,9 @@ OPTIONAL_FIELDS = (
     "drift_tolerance_ms",
     "period_drift_tolerance_ms",
     "edge_tolerance_ms",
+    "coverage_mode",
+    "coverage_window_start_ms",
+    "coverage_window_end_ms",
 )
 KNOWN_FIELDS = frozenset(REQUIRED_FIELDS + OPTIONAL_FIELDS)
 
@@ -68,6 +72,9 @@ class Contract:
     drift_tolerance_ms: int
     period_drift_tolerance_ms: int
     edge_tolerance_ms: int
+    coverage_mode: str
+    coverage_window_start_ms: int | None
+    coverage_window_end_ms: int | None
 
     def display_path(self, path: Path) -> str:
         return display_path(path, self.base_dir)
@@ -242,6 +249,9 @@ def build_contract(
     edge = optional_tolerance(
         raw, "edge_tolerance_ms", jitter, config_path, field_lines, entry_line
     )
+    coverage_mode, coverage_start, coverage_end = coverage_settings(
+        raw, config_path=config_path, lines=field_lines, fallback=entry_line
+    )
     return Contract(
         stream_id=stream_id,
         source=source,
@@ -262,4 +272,7 @@ def build_contract(
         drift_tolerance_ms=drift,
         period_drift_tolerance_ms=period_drift,
         edge_tolerance_ms=edge,
+        coverage_mode=coverage_mode,
+        coverage_window_start_ms=coverage_start,
+        coverage_window_end_ms=coverage_end,
     )

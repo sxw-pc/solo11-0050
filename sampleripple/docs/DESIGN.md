@@ -74,10 +74,12 @@ configs/*.yaml
 1. **保留原始顺序**：按加载序号 `ordinal` 排列，得到 `raw_points`。该顺序只用于乱序检测。
 2. **排序**：按 `(ts_ms, sequence, ordinal)` 升序排列为 `points`。重复时间戳仍保留，便于重复检测。
 3. **唯一点**：按 `ts_ms` 保留首次出现，得到 `unique_points`，用于网格、缺口、漂移等统计。
-4. **锚点**：`anchor = min(ts_ms)`，即组内最早样本时刻；`last = max(ts_ms)`。
-5. **预期点数**：`expected_points = floor((last - anchor) / P) + 1`。它只覆盖观测跨度，不推测尾部未来样本。
+4. **锚点**：实测首末时刻记为 `first = min(ts_ms)`、`last = max(ts_ms)`（`last_ms` 两种口径下都表示实测末点）。`observed_span` 口径下 `anchor = first`；`declared_window` 口径下 `anchor = coverage_window_start_ms`。
+5. **预期点数与覆盖口径**（契约字段 `coverage_mode`）：
+   - `observed_span`（默认）：`expected_points = floor((last - anchor) / P) + 1`，只覆盖观测跨度，不推测尾部未来样本。
+   - `declared_window`：从声明窗起点到终点按 `P` 铺槽，`expected_points = floor((coverage_window_end_ms - anchor) / P) + 1`，窗口内整段缺失都计入。
 6. **槽位**：`slot(t) = round_half_up((t - anchor) / P)`；每个唯一点映射到最近的锚点网格槽。
-7. **缺失槽**：`[0, expected_points)` 中没有唯一点落入的槽。
+7. **缺失槽**：`[0, expected_points)` 中没有唯一点落入的槽；占槽与缺失互斥。`declared_window` 下若声明窗与实测跨度完全无交集，或某点映射到负槽/超出上界，以 `COVERAGE_WINDOW_MISMATCH` 失败而不静默丢点。
 8. **对齐偏移**：对每个唯一点，计算它到最近 Unix epoch 标称边界
    `b(t) = round_half_up(t / P) * P` 的有符号残差，取中位数，即
    `alignment_offset_ms`。该指标衡量整体相位是否踩在标称边界上。
