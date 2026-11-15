@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .contracts import Contract
+from .loaders import Point
 from .timeline import GroupTimeline
 from .util.timeutil import nearest_boundary_ms
 
@@ -30,6 +31,18 @@ RULE_CATEGORY = {
 RULES = tuple(RULE_CATEGORY)
 SEVERITIES = ("info", "warning", "error", "critical")
 DRIFT_WINDOW = 100
+SCOPE_INTRA_FILE = "intra_file"
+SCOPE_CROSS_FILE = "cross_file"
+DUPLICATE_SCOPES = (SCOPE_INTRA_FILE, SCOPE_CROSS_FILE)
+
+
+@dataclass(frozen=True)
+class DuplicateEvidence:
+    source_file: str
+    line_no: int
+    other_source_file: str
+    other_line_no: int
+    scope: str
 
 
 @dataclass(frozen=True)
@@ -45,12 +58,15 @@ class Anomaly:
     severity: str
     detail: str
     fit_period_ms: float | None = None
+    duplicate: DuplicateEvidence | None = None
 
     def __post_init__(self) -> None:
         if self.rule_id not in RULE_CATEGORY:
             raise ValueError(f"unknown rule id: {self.rule_id}")
         if self.category != RULE_CATEGORY[self.rule_id]:
             raise ValueError("rule/category mismatch")
+        if self.duplicate is not None and self.duplicate.scope not in DUPLICATE_SCOPES:
+            raise ValueError(f"unknown duplicate scope: {self.duplicate.scope}")
 
 
 def _anomaly(
@@ -63,6 +79,7 @@ def _anomaly(
     severity: str,
     detail: str,
     fit_period_ms: float | None = None,
+    duplicate: DuplicateEvidence | None = None,
 ) -> Anomaly:
     return Anomaly(
         stream_id=contract.stream_id,
@@ -76,6 +93,7 @@ def _anomaly(
         severity=severity,
         detail=detail,
         fit_period_ms=fit_period_ms,
+        duplicate=duplicate,
     )
 
 
@@ -83,29 +101,35 @@ def _duplicates(contract: Contract, timeline: GroupTimeline) -> list[Anomaly]:
     if contract.duplicate_policy == "ignore":
         return []
     found: list[Anomaly] = []
-    first_ts: dict[int, int] = {}
-    first_seq: dict[str, int] = {}
+    first_by_ts: dict[int, Point] = {}
+    first_by_seq: dict[str, Point] = {}
     for index, point in enumerate(timeline.points):
         markers: list[str] = []
-        expected = point.ts_ms
-        if point.ts_ms in first_ts:
+        other: Point | None = None
+        if point.ts_ms in first_by_ts:
             markers.append("timestamp")
-            expected = first_ts[point.ts_ms]
+            other = first_by_ts[point.ts_ms]
         else:
-            first_ts[point.ts_ms] = point.ts_ms
+            first_by_ts[point.ts_ms] = point
         if point.sequence is not None:
-            if point.sequence in first_seq:
+            if point.sequence in first_by_seq:
                 markers.append("sequence")
-                if "timestamp" not in markers:
-                    expected = first_seq[point.sequence]
+                if other is None:
+                    other = first_by_seq[point.sequence]
             else:
-                first_seq[point.sequence] = point.ts_ms
-        if markers:
+                first_by_seq[point.sequence] = point
+        if markers and other is not None:
+            same_file = other.source_file == point.source_file
             found.append(
                 _anomaly(
                     contract, timeline, "DUPLICATE_POINT", index,
-                    expected, point.ts_ms, "error",
+                    other.ts_ms, point.ts_ms, "error",
                     "duplicate " + "+".join(markers),
+                    duplicate=DuplicateEvidence(
+                        point.source_file, point.line_no,
+                        other.source_file, other.line_no,
+                        SCOPE_INTRA_FILE if same_file else SCOPE_CROSS_FILE,
+                    ),
                 )
             )
     return found

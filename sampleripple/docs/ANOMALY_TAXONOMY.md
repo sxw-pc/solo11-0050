@@ -60,6 +60,14 @@ trigger = abs(mean_i) > drift_tolerance_ms
 
 对首次出现之后的多余点逐点报一条。若时间戳与序号同时重复，只报一条，`detail` 为 `duplicate timestamp+sequence`。
 
+**证据字段：** 每条记录额外携带：
+
+- `source_file` / `line_no`：当前重复行所在的来源文件与行号；
+- `other_source_file` / `other_line_no`：首次出现（代表点）的来源文件与行号；
+- `duplicate_scope`：`intra_file`（同文件内重复）或 `cross_file`（跨文件重复）。
+
+同序号但时间戳不同的点保留在唯一时间轴上，不因去重丢失；跨文件重复不依赖文件名，目录内文件重命名后仍得到同一组重复判定。报告在流级与全局 `summary.duplicates_by_file` 中按来源文件聚合重复计数。
+
 **索引：** 时间排序后（含重复行）的行下标。  
 `expected_ms`：首次同 ts/seq 点时刻；`actual_ms`：当前重复点；`delta_ms`：二者差。  
 **严重级别：** `error`。  

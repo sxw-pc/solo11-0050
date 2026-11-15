@@ -133,12 +133,17 @@
       "category": "DUPLICATE",
       "delta_ms": 0,
       "detail": "duplicate timestamp+sequence",
+      "duplicate_scope": "intra_file",
       "expected_at": "2024-06-04T00:02:00.000Z",
       "expected_ms": 1717459320000,
       "group_key": "site-a/line-07/sensor-x",
       "index": 3,
+      "line_no": 5,
+      "other_line_no": 4,
+      "other_source_file": "fixtures/samples/dup/2024-06-04.csv",
       "rule_id": "DUPLICATE_POINT",
       "severity": "error",
+      "source_file": "fixtures/samples/dup/2024-06-04.csv",
       "stream_id": "dup-run"
     },
     {
@@ -302,6 +307,7 @@
           "info": 0,
           "warning": 0
         },
+        "duplicates_by_file": {},
         "expected_points": 12,
         "group_count": 2,
         "missing_slots": 0,
@@ -472,6 +478,7 @@
           "info": 0,
           "warning": 3
         },
+        "duplicates_by_file": {},
         "expected_points": 10,
         "group_count": 1,
         "missing_slots": 0,
@@ -571,6 +578,7 @@
           "info": 0,
           "warning": 1
         },
+        "duplicates_by_file": {},
         "expected_points": 6,
         "group_count": 1,
         "missing_slots": 1,
@@ -586,12 +594,17 @@
           "category": "DUPLICATE",
           "delta_ms": 0,
           "detail": "duplicate timestamp+sequence",
+          "duplicate_scope": "intra_file",
           "expected_at": "2024-06-04T00:02:00.000Z",
           "expected_ms": 1717459320000,
           "group_key": "site-a/line-07/sensor-x",
           "index": 3,
+          "line_no": 5,
+          "other_line_no": 4,
+          "other_source_file": "fixtures/samples/dup/2024-06-04.csv",
           "rule_id": "DUPLICATE_POINT",
           "severity": "error",
+          "source_file": "fixtures/samples/dup/2024-06-04.csv",
           "stream_id": "dup-run"
         }
       ],
@@ -655,6 +668,9 @@
           "error": 1,
           "info": 0,
           "warning": 0
+        },
+        "duplicates_by_file": {
+          "fixtures/samples/dup/2024-06-04.csv": 1
         },
         "expected_points": 6,
         "group_count": 1,
@@ -741,6 +757,7 @@
           "info": 0,
           "warning": 1
         },
+        "duplicates_by_file": {},
         "expected_points": 6,
         "group_count": 1,
         "missing_slots": 0,
@@ -916,6 +933,7 @@
           "info": 0,
           "warning": 3
         },
+        "duplicates_by_file": {},
         "expected_points": 17,
         "group_count": 3,
         "missing_slots": 1,
@@ -951,6 +969,9 @@
       "error": 7,
       "info": 0,
       "warning": 8
+    },
+    "duplicates_by_file": {
+      "fixtures/samples/dup/2024-06-04.csv": 1
     },
     "expected_points": 57,
     "group_count": 9,

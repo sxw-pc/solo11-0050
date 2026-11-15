@@ -66,6 +66,12 @@ def build_timeline(group: tuple[str, ...], points: Iterable[Point], period_ms: i
     if not raw_points:
         raise ValueError("cannot build a timeline without points")
     ordered = tuple(sorted(raw_points, key=_chronological_key))
+    # Dedup key is the timestamp alone: the first point in chronological
+    # order (ts, sequence, ordinal) stays as the stable representative in
+    # unique_points, so rows that reuse a sequence with a different
+    # timestamp are preserved. Duplicate evidence (same ts and/or same
+    # sequence, within one file or across files) is reported from
+    # timeline.points by anomalies._duplicates; nothing is dropped here.
     unique_points: list[Point] = []
     seen_timestamps: set[int] = set()
     for point in ordered:

@@ -27,6 +27,14 @@ def _severity_counts(anomalies: Iterable[Anomaly]) -> dict[str, int]:
     return {severity: counts.get(severity, 0) for severity in SEVERITIES}
 
 
+def _duplicates_by_file(anomalies: Iterable[Anomaly]) -> dict[str, int]:
+    counts: Counter[str] = Counter()
+    for anomaly in anomalies:
+        if anomaly.rule_id == "DUPLICATE_POINT" and anomaly.duplicate is not None:
+            counts[anomaly.duplicate.source_file] += 1
+    return {path: counts[path] for path in sorted(counts)}
+
+
 def anomaly_dict(anomaly: Anomaly) -> dict[str, object]:
     data: dict[str, object] = {
         "actual_at": iso_from_ms(anomaly.actual_ms),
@@ -44,6 +52,13 @@ def anomaly_dict(anomaly: Anomaly) -> dict[str, object]:
     }
     if anomaly.fit_period_ms is not None:
         data["fit_period_ms"] = anomaly.fit_period_ms
+    if anomaly.duplicate is not None:
+        evidence = anomaly.duplicate
+        data["source_file"] = evidence.source_file
+        data["line_no"] = evidence.line_no
+        data["other_source_file"] = evidence.other_source_file
+        data["other_line_no"] = evidence.other_line_no
+        data["duplicate_scope"] = evidence.scope
     return data
 
 
@@ -92,6 +107,7 @@ def _stream_dict(stream: StreamRun) -> dict[str, object]:
             "by_category": _category_counts(stream.anomalies),
             "by_rule": _rule_counts(stream.anomalies),
             "by_severity": _severity_counts(stream.anomalies),
+            "duplicates_by_file": _duplicates_by_file(stream.anomalies),
             "expected_points": expected_points,
             "group_count": len(groups),
             "missing_slots": sum(item["missing_slots"] for item in groups),
@@ -122,6 +138,7 @@ def build_report(verification: Verification) -> dict[str, object]:
             "by_category": _category_counts(anomalies),
             "by_rule": _rule_counts(anomalies),
             "by_severity": _severity_counts(anomalies),
+            "duplicates_by_file": _duplicates_by_file(anomalies),
             "expected_points": total_expected,
             "group_count": total_groups,
             "missing_slots": total_missing,

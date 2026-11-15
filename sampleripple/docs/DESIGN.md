@@ -99,7 +99,7 @@ configs/*.yaml
 | `EDGE_SKEW` | 0 或末唯一点下标 | 最近标称边界 | 首/末样本 |
 | `PERIOD_DRIFT` | 末唯一点下标 | 锚点 + `P * last_slot` | 末唯一点 |
 
-`severity` 固定为 `info` / `warning` / `error` / `critical` 之一；当前实现只产生 `warning` 与 `error`。每个异常还带 `expected_at` / `actual_at`（UTC ISO-8601 毫秒）和人类可读 `detail`。
+`severity` 固定为 `info` / `warning` / `error` / `critical` 之一；当前实现只产生 `warning` 与 `error`。每个异常还带 `expected_at` / `actual_at`（UTC ISO-8601 毫秒）和人类可读 `detail`。`DUPLICATE_POINT` 额外携带来源证据：`source_file` / `line_no`（当前重复行）、`other_source_file` / `other_line_no`（首次出现行）与 `duplicate_scope`（`intra_file` / `cross_file`）；报告按来源文件聚合 `duplicates_by_file`。
 
 公式、阈值和误判提示见 [ANOMALY_TAXONOMY.md](ANOMALY_TAXONOMY.md)。
 

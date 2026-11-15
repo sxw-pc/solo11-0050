@@ -69,7 +69,7 @@
 - `missing_policy: strict`：任一网格槽缺失都产生 `MISSING_SLOT`，严重级别 `error`。
 - `missing_policy: allow_k`：缺失数 `<= missing_allow_k` 时不报；否则逐槽报 `warning`。
 - `missing_policy: ignore`：不产生缺失异常。
-- `duplicate_policy: report`：同组同时间戳或同序号的多余点逐点报错。
+- `duplicate_policy: report`：同组同时间戳或同序号的多余点逐点报错，并附来源文件/行号证据与 `intra_file` / `cross_file` 分类。
 - `duplicate_policy: ignore`：不产生重复异常，但重复行仍计入 `actual_points`，统计中保留。
 
 `GAP` 与 `MISSING` 可以同时触发：前者看相邻实际间隔，后者看声明网格槽。二者语义不同，不互相抑制。

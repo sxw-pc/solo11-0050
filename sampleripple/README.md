@@ -88,7 +88,7 @@ streams:
 | --- | --- | --- |
 | `GAP` | `GAP_ADJACENT` | 相邻唯一样本间隔大于标称周期 + `gap_tolerance_ms` |
 | `DRIFT` | `DRIFT_CUMULATIVE` | 最近至多 100 个点的有符号相位残差均值超过 `drift_tolerance_ms` |
-| `DUPLICATE` | `DUPLICATE_POINT` | 同组同时间戳或同 sequence 重复出现 |
+| `DUPLICATE` | `DUPLICATE_POINT` | 同组同时间戳或同 sequence 重复出现，附来源文件/行号证据与 `intra_file` / `cross_file` 分类 |
 | `DISORDER` | `DISORDER_LOCAL` | 原始输入顺序在 `disorder_window` 内出现时间逆序 |
 | `MISSING` | `MISSING_SLOT` | 按时间跨度声明的网格槽缺失，超过 `missing_policy` 容忍度 |
 | `EDGE_SKEW` | `EDGE_SKEW_HEAD` / `EDGE_SKEW_TAIL` | 组首/末样本偏离最近的标称边界超过 `edge_tolerance_ms` |
