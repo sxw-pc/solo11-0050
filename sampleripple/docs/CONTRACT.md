@@ -38,8 +38,20 @@
 | `drift_tolerance_ms` | int | 否 | DRIFT 阈值；默认 `jitter_tolerance_ms` |
 | `period_drift_tolerance_ms` | int | 否 | 周期拟合偏差阈值；默认 `jitter_tolerance_ms` |
 | `edge_tolerance_ms` | int | 否 | 首末边界偏移阈值；默认 `jitter_tolerance_ms` |
+| `epoch_align_ms` | int/null | 否 | 流级标称时钟基准（epoch 毫秒）；缺省时每组锚在自己的首个样本上 |
 
 `time_field`、`sequence_field`、`group_by` 必须指向不同字段。`group_by` 字段值按声明顺序以 `/` 连接为 `group_key`。
+
+### 2.1 流级标称时钟基准（`epoch_align_ms`）
+
+缺省（不声明或显式 `null`）时保持历史行为：每个分组把自己的首个唯一样本作为锚点，`expected_points` 由观测跨度 `floor((last - anchor) / P) + 1` 推导，对齐残差以 Unix epoch 标称网格（原点 0）为尺。
+
+声明 `epoch_align_ms` 后，同一 `stream_id` 下所有分组共享这一基准：
+
+- `anchor_ms = epoch_align_ms`，槽号 `slot(t) = round_half_up((t - anchor) / P)` 成为全流统一的绝对槽号，跨组可直接比较；
+- `expected_ms(slot) = anchor + slot * P`；`expected_points` 与 `missing_slots` 在观测首末槽位窗口内重建，首点抖动在容差内时不会凭空产生 `GAP` 或 `MISSING_SLOT`；
+- `alignment_offset_ms`、`EDGE_SKEW_HEAD/TAIL` 的残差改以声明基准的网格（原点 `epoch_align_ms`）为尺，与槽位、`expected_ms` 自洽；
+- 报告每组新增 `anchor_source`（`group_first` / `epoch`）、`anchor_ms`、`anchor_at`、`anchor_offset_ms`（锚点相对 Unix epoch 标称网格的有符号偏移），同一条 epoch 流的所有分组这四项完全一致。
 
 ## 3. 数据格式
 
@@ -105,6 +117,7 @@ streams:
     missing_policy: strict
     disorder_window: 2
     duplicate_policy: report
+    epoch_align_ms: 1717200000000   # 可选；缺省时每组锚在自己的首个样本上
 ```
 
 ## 7. 错误码

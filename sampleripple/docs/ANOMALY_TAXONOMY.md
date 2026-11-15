@@ -1,6 +1,6 @@
 # 异常分类法
 
-本文定义七类异常的公式、参数、索引和严重级别。设组内最早样本为锚点 `a`，标称周期为 `P`，相邻唯一样本时刻为 `t_i`，网格槽为 `slot(t) = round_half_up((t-a)/P)`。
+本文定义七类异常的公式、参数、索引和严重级别。设标称周期为 `P`，相邻唯一样本时刻为 `t_i`。锚点 `a` 与残差网格原点 `g` 由契约的 `epoch_align_ms` 决定：缺省时 `a = min(ts_ms)`（组内最早样本）、`g = 0`（Unix epoch 标称网格）；声明后 `a = g = epoch_align_ms`，同一条流的所有分组共享同一基准。网格槽为 `slot(t) = round_half_up((t-a)/P)`。
 
 所有异常都携带：
 
@@ -85,11 +85,12 @@ delta    = actual - expected  # 负数
 
 ## 5. MISSING — `MISSING_SLOT`
 
-**判定：** 组内时间跨度为 `[a, last]`，期望槽位共：
+**判定：** 组内观测首末槽位窗口为 `[first_slot, last_slot]`，期望槽位共：
 
 ```text
-expected_points = floor((last - a) / P) + 1
-missing_slots   = {0..expected_points-1} \ {slot(t) for t in unique_points}
+expected_points = last_slot - first_slot + 1     # epoch 基准
+                = floor((last - a) / P) + 1      # 分组首点锚（冻结的历史公式）
+missing_slots   = 窗口内没有唯一点落入的槽
 ```
 
 - `strict`：任一缺失报 `error`。
@@ -106,7 +107,7 @@ missing_slots   = {0..expected_points-1} \ {slot(t) for t in unique_points}
 **判定：**
 
 ```text
-boundary(t) = round_half_up(t / P) * P      # 最近 Unix epoch 标称边界
+boundary(t) = g + round_half_up((t - g) / P) * P   # 最近标称边界，g 为残差网格原点
 head_skew   = abs(first - boundary(first))
 tail_skew   = abs(last  - boundary(last))
 trigger     = skew > edge_tolerance_ms
@@ -118,7 +119,7 @@ trigger     = skew > edge_tolerance_ms
 **严重级别：** `warning`。  
 **含义：** 组首/末没有落在周期边界上，下游按边界切窗会错位。
 
-**误判提示：** 用 Unix epoch 边界是刻意选择；若业务周期从任意起点开始，应把 `edge_tolerance_ms` 设为大于该相位偏移，或另行设计契约。不要把它与 `alignment_offset_ms` 混为一谈：后者是整组相位残差中位数。
+**误判提示：** 缺省时残差网格原点 `g = 0`，即用 Unix epoch 边界是刻意选择；声明 `epoch_align_ms` 后边界跟随声明基准（`g = epoch_align_ms`），与槽位、`expected_ms` 和 `alignment_offset_ms` 使用同一把尺子。若业务周期从任意起点开始，应声明 `epoch_align_ms` 或把 `edge_tolerance_ms` 设为大于该相位偏移。不要把它与 `alignment_offset_ms` 混为一谈：后者是整组相位残差中位数。
 
 ## 7. PERIOD_DRIFT — `PERIOD_DRIFT_FIT`
 

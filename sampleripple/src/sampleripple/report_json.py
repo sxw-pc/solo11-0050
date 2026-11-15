@@ -53,6 +53,10 @@ def _group_dict(timeline: GroupTimeline, anomalies: tuple[Anomaly, ...]) -> dict
     return {
         "actual_points": len(timeline.points),
         "alignment_offset_ms": timeline.alignment_offset_ms,
+        "anchor_at": iso_from_ms(timeline.anchor_ms),
+        "anchor_ms": timeline.anchor_ms,
+        "anchor_offset_ms": timeline.anchor_offset_ms,
+        "anchor_source": timeline.anchor_source,
         "anomaly_count": len(anomalies),
         "by_category": _category_counts(anomalies),
         "expected_points": timeline.expected_points,

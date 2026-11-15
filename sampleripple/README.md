@@ -78,6 +78,7 @@ streams:
     drift_tolerance_ms: 500
     period_drift_tolerance_ms: 200
     edge_tolerance_ms: 500
+    epoch_align_ms: 1717200000000    # 可选：流级标称时钟基准；缺省时每组锚在自己的首个样本上
 ```
 
 `source` 与 `ledger.db_path` 的相对路径以 `base_dir` 为基准；未声明 `base_dir` 时以配置文件所在目录为基准。所有示例键值均为合成占位符。

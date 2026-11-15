@@ -22,6 +22,7 @@ streams:
     drift_tolerance_ms: 500
     period_drift_tolerance_ms: 200
     edge_tolerance_ms: 500
+    epoch_align_ms: 1717200000000
 
   - stream_id: drift-run
     source: fixtures/samples/drift/2024-06-02.csv
@@ -39,6 +40,7 @@ streams:
     drift_tolerance_ms: 500
     period_drift_tolerance_ms: 200
     edge_tolerance_ms: 5000
+    epoch_align_ms: 1717286397000
 
   - stream_id: gap-run
     source: fixtures/samples/gap/2024-06-03.jsonl
@@ -107,3 +109,4 @@ streams:
     drift_tolerance_ms: 5000
     period_drift_tolerance_ms: 500
     edge_tolerance_ms: 500
+    epoch_align_ms: 1717632003000

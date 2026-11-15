@@ -108,3 +108,26 @@ def test_missing_config_file(tmp_path: Path):
 def test_demo_and_strict_profiles_load():
     assert len(load_config(DEMO_CONFIG).streams) == 6
     assert len(load_config(PROJECT_ROOT / "configs" / "strict.yaml").streams) == 6
+
+
+def test_epoch_align_ms_defaults_to_none(config_writer, stream_factory):
+    path = config_writer([stream_factory(CLEAN_FILE)])
+    config = load_config(path)
+    assert config.streams[0].epoch_align_ms is None
+
+
+def test_epoch_align_ms_accepts_integer_and_null(config_writer, stream_factory):
+    path = config_writer([stream_factory(CLEAN_FILE, epoch_align_ms=1717200000000)])
+    assert load_config(path).streams[0].epoch_align_ms == 1717200000000
+    stream = stream_factory(CLEAN_FILE)
+    stream["epoch_align_ms"] = None
+    path = config_writer([stream])
+    assert load_config(path).streams[0].epoch_align_ms is None
+
+
+@pytest.mark.parametrize("value", [True, 1.5, "1717200000000", [1717200000000]])
+def test_epoch_align_ms_rejects_non_integer(config_writer, stream_factory, value):
+    path = config_writer([stream_factory(CLEAN_FILE, epoch_align_ms=value)])
+    with pytest.raises(AppError) as caught:
+        load_config(path)
+    assert caught.value.code == "CFG_BAD_TYPE"

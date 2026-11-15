@@ -69,23 +69,26 @@ configs/*.yaml
 
 ## 4. 时间轴重建
 
-设一个分组内的样本集合为 `S`，标称周期 `P = nominal_period_ms`。
+设一个分组内的样本集合为 `S`，标称周期 `P = nominal_period_ms`。锚点有两种来源，由契约的 `epoch_align_ms` 决定：
+
+- **分组首点锚（缺省，`anchor_source = "group_first"`）**：`anchor = min(ts_ms)`，即组内最早样本时刻。这是冻结的历史行为，老配置与老 golden 的字节兼容都建立在它上面。
+- **流级标称时钟基准（声明 `epoch_align_ms` 时，`anchor_source = "epoch"`）**：`anchor = epoch_align_ms`，同一 `stream_id` 下所有分组共享同一基准，槽号、期望时刻与残差都在同一把尺子上，跨组可直接横向比较，也能对着配置声明的周期起点核对。
+
+重建步骤：
 
 1. **保留原始顺序**：按加载序号 `ordinal` 排列，得到 `raw_points`。该顺序只用于乱序检测。
 2. **排序**：按 `(ts_ms, sequence, ordinal)` 升序排列为 `points`。重复时间戳仍保留，便于重复检测。
 3. **唯一点**：按 `ts_ms` 保留首次出现，得到 `unique_points`，用于网格、缺口、漂移等统计。
-4. **锚点**：`anchor = min(ts_ms)`，即组内最早样本时刻；`last = max(ts_ms)`。
-5. **预期点数**：`expected_points = floor((last - anchor) / P) + 1`。它只覆盖观测跨度，不推测尾部未来样本。
-6. **槽位**：`slot(t) = round_half_up((t - anchor) / P)`；每个唯一点映射到最近的锚点网格槽。
-7. **缺失槽**：`[0, expected_points)` 中没有唯一点落入的槽。
-8. **对齐偏移**：对每个唯一点，计算它到最近 Unix epoch 标称边界
-   `b(t) = round_half_up(t / P) * P` 的有符号残差，取中位数，即
-   `alignment_offset_ms`。该指标衡量整体相位是否踩在标称边界上。
+4. **锚点**：按上述两种来源之一确定 `anchor`；`last = max(ts_ms)`。
+5. **预期点数**：分组首点锚下 `expected_points = floor((last - anchor) / P) + 1`（冻结公式）；epoch 基准下取观测首末槽位窗口 `last_slot - first_slot + 1`。两者都只覆盖观测跨度，不推测尾部未来样本，也不会因首点落在基准之后而凭空产生头部缺失槽。
+6. **槽位**：`slot(t) = round_half_up((t - anchor) / P)`；每个唯一点映射到最近的锚点网格槽。epoch 基准下槽号是全流统一的绝对编号。
+7. **缺失槽**：预期窗口内没有唯一点落入的槽。
+8. **对齐偏移**：对每个唯一点，计算它到最近标称边界的有符号残差并取中位数，即 `alignment_offset_ms`。残差网格原点 `g` 在缺省时为 0（Unix epoch 标称网格），声明基准时为 `epoch_align_ms`，即 `b(t) = g + round_half_up((t - g) / P) * P`。该指标衡量整体相位是否踩在标称边界上。
 9. **周期拟合**：以槽位为 `x`、`t - anchor` 为 `y` 做最小二乘斜率，得到
-   `period_fit_ms`。少于两个不同槽位时为 `null`。
+   `period_fit_ms`。少于两个不同槽位时为 `null`。斜率对锚点平移不变，基准切换不改变拟合结果。
 10. **分组键**：`group_by` 字段值按配置顺序用 `/` 连接。示例数据只用无歧义占位符。
 
-重建不修改、不回填任何样本；乱序和重复都作为证据输出。
+重建不修改、不回填任何样本；乱序和重复都作为证据输出。报告为每组记录 `anchor_source`、`anchor_ms`/`anchor_at` 与 `anchor_offset_ms`（锚点相对 Unix epoch 标称网格的有符号偏移），使锚点来源可审计。
 
 ## 5. 异常判定
 

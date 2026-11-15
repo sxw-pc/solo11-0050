@@ -26,7 +26,7 @@ def test_verify_covers_all_categories(temp_demo_config, tmp_path: Path, capsys):
                  "--out", str(out)]) == 0
     assert "verify OK" in capsys.readouterr().out
     report = json.loads((out / "report.json").read_text(encoding="utf-8"))
-    assert report["summary"]["anomaly_count"] == 15
+    assert report["summary"]["anomaly_count"] == 20
     assert all(report["summary"]["by_category"][name] > 0 for name in CATEGORIES)
     clean = next(
         item for item in report["streams"] if item["stream_id"] == "clean-grid"

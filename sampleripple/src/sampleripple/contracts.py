@@ -41,6 +41,7 @@ OPTIONAL_FIELDS = (
     "drift_tolerance_ms",
     "period_drift_tolerance_ms",
     "edge_tolerance_ms",
+    "epoch_align_ms",
 )
 KNOWN_FIELDS = frozenset(REQUIRED_FIELDS + OPTIONAL_FIELDS)
 
@@ -68,6 +69,7 @@ class Contract:
     drift_tolerance_ms: int
     period_drift_tolerance_ms: int
     edge_tolerance_ms: int
+    epoch_align_ms: int | None
 
     def display_path(self, path: Path) -> str:
         return display_path(path, self.base_dir)
@@ -242,6 +244,16 @@ def build_contract(
     edge = optional_tolerance(
         raw, "edge_tolerance_ms", jitter, config_path, field_lines, entry_line
     )
+    epoch_align: int | None = None
+    if "epoch_align_ms" in raw and raw["epoch_align_ms"] is not None:
+        value = raw["epoch_align_ms"]
+        if isinstance(value, bool) or not isinstance(value, int):
+            raise _error(
+                "CFG_BAD_TYPE",
+                "epoch_align_ms must be an integer epoch-millisecond timestamp or null",
+                config_path, line_of(field_lines, "epoch_align_ms", entry_line),
+            )
+        epoch_align = value
     return Contract(
         stream_id=stream_id,
         source=source,
@@ -262,4 +274,5 @@ def build_contract(
         drift_tolerance_ms=drift,
         period_drift_tolerance_ms=period_drift,
         edge_tolerance_ms=edge,
+        epoch_align_ms=epoch_align,
     )

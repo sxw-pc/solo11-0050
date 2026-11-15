@@ -178,8 +178,10 @@ def _missing(contract: Contract, timeline: GroupTimeline) -> list[Anomaly]:
 
 def _edges(contract: Contract, timeline: GroupTimeline) -> list[Anomaly]:
     found: list[Anomaly] = []
+    origin = timeline.grid_origin_ms
+    period = contract.nominal_period_ms
     first = timeline.unique_points[0]
-    first_boundary = nearest_boundary_ms(first.ts_ms, contract.nominal_period_ms)
+    first_boundary = origin + nearest_boundary_ms(first.ts_ms - origin, period)
     if abs(first.ts_ms - first_boundary) > contract.edge_tolerance_ms:
         found.append(
             _anomaly(
@@ -191,7 +193,7 @@ def _edges(contract: Contract, timeline: GroupTimeline) -> list[Anomaly]:
     last_index = len(timeline.unique_points) - 1
     if last_index > 0:
         last = timeline.unique_points[-1]
-        last_boundary = nearest_boundary_ms(last.ts_ms, contract.nominal_period_ms)
+        last_boundary = origin + nearest_boundary_ms(last.ts_ms - origin, period)
         if abs(last.ts_ms - last_boundary) > contract.edge_tolerance_ms:
             found.append(
                 _anomaly(
